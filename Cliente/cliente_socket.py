@@ -61,21 +61,3 @@ class ClienteSocket:
             self._socket.send((json.dumps(datos) + "\n").encode("utf-8"))
         except (socket.error, ConnectionRefusedError) as e:
             raise ConnectionError(f"No se pudo conectar al servidor: {e}")
-
-    def enviar_y_recibir(self, datos):
-        if not self._conectado:
-            self.conectar()
-        respuesta = [None]
-        evento = threading.Event()
-
-        def cb(msg):
-            respuesta[0] = msg
-            evento.set()
-
-        self.registrar_callback("any", cb)
-        self.enviar(datos)
-        evento.wait(timeout=10)
-        self.remover_callback("any")
-        if not evento.is_set():
-            raise ConnectionError("Tiempo de espera agotado")
-        return respuesta[0]
