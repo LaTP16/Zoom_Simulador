@@ -1,0 +1,58 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam actor {
+  BorderColor #2E86C1
+  FontColor #2E86C1
+}
+
+actor "Usuario" as Usuario
+actor "Host" as Host
+actor "Servidor" as Servidor
+
+rectangle "Sistema de Videoconferencia" {
+  usecase "Iniciar Sesión" as UC1
+  usecase "Crear Sala" as UC2
+  usecase "Unirse a Sala" as UC3
+  usecase "Enviar Mensaje de Chat" as UC4
+  usecase "Transmitir Video" as UC5
+  usecase "Ver Transmisión de Video" as UC6
+  usecase "Compartir Archivo" as UC7
+  usecase "Descargar Archivo" as UC8
+  usecase "Aceptar Solicitud de Ingreso" as UC9
+  usecase "Rechazar Solicitud de Ingreso" as UC10
+  usecase "Salir de Sala" as UC11
+  usecase "Gestionar Base de Datos" as UC12
+  usecase "Reenviar Mensajes" as UC13
+}
+
+Usuario --> UC1
+Usuario --> UC3
+Usuario --> UC4
+Usuario --> UC5
+Usuario --> UC6
+Usuario --> UC7
+Usuario --> UC8
+Usuario --> UC11
+
+Host --> UC1
+Host --> UC2
+Host --> UC3
+Host --> UC4
+Host --> UC5
+Host --> UC6
+Host --> UC7
+Host --> UC8
+Host --> UC9
+Host --> UC10
+Host --> UC11
+
+Servidor --> UC12
+Servidor --> UC13
+
+Host -up-|> Usuario : extiende
+
+note right of UC2 : Solo el Host puede\ncrear nuevas salas
+note right of UC9 : El Host acepta\nsolicitudes de ingreso
+note right of UC10 : El Host rechaza\nsolicitudes de ingreso
+@enduml

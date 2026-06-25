@@ -1,0 +1,2 @@
+ffmpeg (instalar con gestor de paquetes del sistema)
+Pillow>=10.0.0

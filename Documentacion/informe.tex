@@ -1,0 +1,828 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\setlength{\headheight}{14.5pt}
+\setstretch{1.5}
+
+\lstset{
+    language=Python,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny,
+    frame=single,
+    breaklines=true,
+    tabsize=4
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{PC4 - Programaci\'on Orientada a Objetos}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\begin{document}
+
+\onecolumn
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    {\Huge \textbf{Prototipo Zoom}}\\[0.5cm]
+    {\Large Sistema de Videoconferencia por Sockets}\\[1.5cm]
+    {\large \textbf{PC4 - SW403U - Programaci\'on Orientada a Objetos}}\\[0.5cm]
+    {\large Universidad Nacional de Ingeniería}\\[0.3cm]
+    {\large Facultad de Ingenier\'ia Industrial y Sistemas}\\[2cm]
+
+    \begin{tabular}{ll}
+        \textbf{Integrantes:} & \\
+        & \\ Yampufe Pau Héctor Alonso - 20240310I
+        & \\ Romaní Cuyo Gabriel Alberto - 20242045K
+        & \\ Tasayco Portello Luis Antonio - 20240307H
+    \end{tabular}\\[2cm]
+
+    \textbf{Docente: CISNEROS NAPRAVNIK YAN EDUARDO}\\[1.8cm]
+
+    \today
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introducci\'on}
+
+El presente documento describe el dise\~no e implementaci\'on de un \textbf{prototipo acad\'emico de videoconferencia} inspirado en Zoom, desarrollado en Python como parte del curso de Programaci\'on Orientada a Objetos (PC4).
+
+El sistema emplea una arquitectura \textbf{cliente-servidor} basada en \textbf{sockets TCP} con un protocolo de mensajes en formato \textbf{JSON}. Cuenta con autenticaci\'on de usuarios, creaci\'on y gesti\'on de salas virtuales, chat en tiempo real, transferencia de archivos y transmisi\'on de video desde la c\'amara web.
+
+\section{Objetivos}
+
+\begin{itemize}
+    \item Aplicar los principios de la POO: herencia, encapsulamiento, polimorfismo.
+    \item Implementar una arquitectura cliente-servidor mediante sockets TCP.
+    \item Desarrollar un protocolo de comunicaci\'on propio basado en JSON.
+    \item Integrar m\'ultiples funcionalidades: login, salas, chat, archivos y video.
+    \item Utilizar SQLite para la persistencia de informaci\'on.
+    \item Emplear concurrencia con \texttt{threading} para atender m\'ultiples clientes.
+\end{itemize}
+
+\section{Tecnolog\'ias Utilizadas}
+
+\begin{itemize}
+    \item \textbf{Lenguaje:} Python 3.10+
+    \item \textbf{Interfaz gr\'afica:} Tkinter
+    \item \textbf{Comunicaci\'on:} Sockets TCP
+    \item \textbf{Protocolo:} JSON sobre TCP
+    \item \textbf{Base de datos:} SQLite
+    \item \textbf{Concurrencia:} \texttt{threading}
+    \item \textbf{Video:} OpenCV o ffmpeg
+    \item \textbf{Im\'agenes:} Pillow
+\end{itemize}
+
+\section{Arquitectura del Sistema}
+
+El sistema sigue un modelo cliente-servidor. El servidor centraliza las conexiones y act\'ua como intermediario. Cada cliente se conecta mediante TCP y el servidor asigna un hilo independiente por conexi\'on.
+
+\IfFileExists{imagenes/arquitectura.png}{%
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{imagenes/arquitectura.png}
+    \caption{Diagrama de arquitectura del sistema}
+\end{figure}
+}{}
+
+\section{Base de Datos}
+
+La base de datos SQLite contiene las siguientes tablas:
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{p{3.5cm}p{10cm}}
+    \toprule
+    \textbf{Tabla} & \textbf{Columnas} \\
+    \midrule
+    Usuarios          & IdUsuario, Nombres, Correo, PasswordHash, Rol, Activo \\
+    Salas             & IdSala, CodigoSala, Nombre, IdHost, Estado, FechaCreacion \\
+    ParticipantesSala & IdParticipante, IdSala, IdUsuario, Estado, FechaIngreso \\
+    SolicitudesSala   & IdSolicitud, IdSala, IdUsuario, Estado, FechaSolicitud \\
+    Mensajes          & IdMensaje, IdSala, IdUsuario, Contenido, FechaEnvio \\
+    ArchivosCompartidos & IdArchivo, IdSala, IdUsuario, NombreArchivo, RutaArchivo, Tamano, FechaSubida \\
+    \bottomrule
+    \end{tabular}
+    \caption{Tablas de la base de datos}
+\end{table}
+
+\section{Diagrama de Casos de Uso}
+
+\IfFileExists{imagenes/casos_de_uso.png}{%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{imagenes/casos_de_uso.png}
+    \caption{Diagrama de casos de uso del sistema}
+\end{figure}
+}{}
+
+\section{Diagrama de Secuencia}
+
+\IfFileExists{imagenes/secuencia.png}{%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{imagenes/secuencia.png}
+    \caption{Diagrama de secuencia del flujo de la aplicaci\'on}
+\end{figure}
+}{}
+
+\section{Diagrama de Actividades}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{imagenes/actividades.png}
+    \caption{Diagrama de actividades del sistema}
+\end{figure}
+
+\section{Diagrama de Clases}
+
+\IfFileExists{imagenes/clases.png}{%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{imagenes/clases.png}
+    \caption{Diagrama de clases del sistema}
+\end{figure}
+}{}
+
+\section{Descripci\'on de Clases}
+
+\subsection{Lado del Servidor}
+
+\subsubsection{Protocolo}
+\texttt{Servidor/protocolo.py}
+
+Clase de constantes que define todos los tipos de mensaje del protocolo:
+
+\begin{lstlisting}
+class Protocolo:
+    LOGIN_REQUEST = "LOGIN_REQUEST"
+    LOGIN_RESPONSE = "LOGIN_RESPONSE"
+    CREATE_ROOM = "CREATE_ROOM"
+    JOIN_ROOM_REQUEST = "JOIN_ROOM_REQUEST"
+    CHAT_MESSAGE = "CHAT_MESSAGE"
+    CAMERA_FRAME = "CAMERA_FRAME"
+    FILE_START = "FILE_START"
+    FILE_CHUNK = "FILE_CHUNK"
+    FILE_END = "FILE_END"
+    LEAVE_ROOM = "LEAVE_ROOM"
+\end{lstlisting}
+
+\subsubsection{BaseDatos}
+\texttt{Servidor/base\_datos.py}
+
+Singleton que gestiona la conexi\'on a SQLite. Inicializa el esquema y los datos de prueba.
+
+\begin{lstlisting}
+class BaseDatos:
+    _instancia = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instancia is None:
+            cls._instancia = super().__new__(cls)
+        return cls._instancia
+
+    def inicializar(self):
+        with open("crear_tablas.sql") as f:
+            self.conectar().cursor().executescript(f.read())
+\end{lstlisting}
+
+\subsubsection{AuthService}
+\texttt{Servidor/auth\_service.py}
+
+Valida credenciales consultando la BD con hash SHA-256:
+
+\begin{lstlisting}
+class AuthService:
+    def validar_login(self, correo, clave):
+        password_hash = BaseDatos.hash_clave(clave)
+        cursor.execute(
+            "SELECT IdUsuario, Nombres, Rol FROM Usuarios "
+            "WHERE Correo = ? AND PasswordHash = ? AND Activo = 1",
+            (correo, password_hash)
+        )
+        resultado = cursor.fetchone()
+        if resultado:
+            return {"status": "success", "idUsuario": ...}
+        return {"status": "error", "message": "Credenciales incorrectas"}
+\end{lstlisting}
+
+\subsubsection{ManejadorCliente}
+\texttt{Servidor/manejador\_cliente.py}
+
+Maneja la comunicaci\'on con un cliente en un hilo separado. El bucle principal lee mensajes JSON delimitados por \verb|\n| y los despacha seg\'un su tipo:
+
+\begin{lstlisting}
+class ManejadorCliente:
+    def iniciar(self):
+        buffer = ""
+        while self._conectado:
+            datos = self._conexion.recv(4096).decode("utf-8")
+            buffer += datos
+            while "\n" in buffer:
+                linea, buffer = buffer.split("\n", 1)
+                mensaje = json.loads(linea)
+                self._procesar_mensaje(mensaje)
+
+    def _procesar_mensaje(self, mensaje):
+        tipo = mensaje.get("type")
+        if tipo == Protocolo.LOGIN_REQUEST:
+            self._manejar_login(mensaje)
+        elif tipo == Protocolo.CREATE_ROOM:
+            self._manejar_crear_sala(mensaje)
+        elif tipo == Protocolo.CHAT_MESSAGE:
+            self._servidor.reenviar_a_sala(
+                mensaje.get("roomCode"), mensaje, self)
+\end{lstlisting}
+
+\subsubsection{Servidor}
+\texttt{Servidor/servidor.py}
+
+Servidor TCP principal. Acepta conexiones y crea un hilo por cada cliente:
+
+\begin{lstlisting}
+class Servidor:
+    def iniciar(self):
+        BaseDatos().inicializar()
+        self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._socket.bind((self._host, self._puerto))
+        self._socket.listen()
+        while self._activo:
+            conexion, direccion = self._socket.accept()
+            manejador = ManejadorCliente(self, conexion, direccion)
+            hilo = threading.Thread(target=manejador.iniciar, daemon=True)
+            hilo.start()
+\end{lstlisting}
+
+\subsection{Lado del Cliente}
+
+\subsubsection{MainApp}
+\texttt{Cliente/main.py}
+
+Ventana principal Tkinter. Gestiona la navegaci\'on entre pantallas:
+
+\begin{lstlisting}
+class MainApp(tk.Tk):
+    def _on_login_exitoso(self, usuario, cliente_socket):
+        self._usuario = usuario
+        self._cliente_socket = cliente_socket
+        self._mostrar_principal()
+
+    def _mostrar_sala(self, codigo_sala, es_host, id_sala):
+        self.geometry("900x600")
+        self._frame_actual = PantallaSala(
+            self, self._usuario, self._cliente_socket,
+            codigo_sala, es_host, id_sala, self._salir_sala
+        )
+        self._frame_actual.pack(fill=tk.BOTH, expand=True)
+\end{lstlisting}
+
+\subsubsection{ClienteSocket}
+\texttt{Cliente/cliente\_socket.py}
+
+Abstracci\'on del socket TCP con callbacks para despachar mensajes entrantes:
+
+\begin{lstlisting}
+class ClienteSocket:
+    def _escuchar(self):
+        buffer = ""
+        while self._conectado:
+            datos = self._socket.recv(4096).decode("utf-8")
+            buffer += datos
+            while "\n" in buffer:
+                linea, buffer = buffer.split("\n", 1)
+                mensaje = json.loads(linea)
+                tipo = mensaje.get("type")
+                cb = self._callbacks.get(tipo)
+                if cb:
+                    cb(mensaje)
+
+    def enviar(self, datos):
+        self._socket.send(
+            (json.dumps(datos) + "\n").encode("utf-8"))
+\end{lstlisting}
+
+\subsubsection{Usuario}
+\texttt{Cliente/modelos/usuario.py}
+
+Modelo del usuario autenticado:
+
+\begin{lstlisting}
+class Usuario:
+    def __init__(self, id_usuario, nombres, correo, rol):
+        self._id_usuario = id_usuario
+        self._nombres = nombres
+        self._correo = correo
+        self._rol = rol
+
+    def es_host(self):
+        return self._rol.lower() == "host"
+\end{lstlisting}
+
+\subsubsection{Mensaje}
+\texttt{Cliente/modelos/mensaje.py}
+
+Modelo de mensaje de chat con serializaci\'on a diccionario:
+
+\begin{lstlisting}
+class Mensaje:
+    def a_dict(self):
+        return {
+            "type": "CHAT_MESSAGE",
+            "roomCode": self._sala_codigo,
+            "userId": self._id_usuario,
+            "userName": self._nombre_usuario,
+            "message": self._contenido
+        }
+\end{lstlisting}
+
+\subsubsection{LoginFrame}
+\texttt{Cliente/pantallas/login.py}
+
+Pantalla de inicio de sesi\'on. Env\'ia \texttt{LOGIN\_REQUEST} al servidor:
+
+\begin{lstlisting}
+class LoginFrame(tk.Frame):
+    def _procesar_login(self):
+        respuesta = self._cliente_socket.enviar_y_recibir({
+            "type": "LOGIN_REQUEST",
+            "correo": self._entrada_correo.get(),
+            "clave": self._entrada_clave.get()
+        })
+        if respuesta.get("status") == "success":
+            usuario = Usuario(respuesta["idUsuario"],
+                              respuesta["nombres"], correo,
+                              respuesta["rol"])
+            self._on_login_exitoso(usuario, self._cliente_socket)
+\end{lstlisting}
+
+\subsubsection{PantallaPrincipal}
+\texttt{Cliente/pantallas/pantalla\_principal.py}
+
+Men\'u principal con opciones de crear o unirse a una sala:
+
+\begin{lstlisting}
+class PantallaPrincipal(tk.Frame):
+    def _crear_sala(self):
+        codigo = ''.join(random.choices(
+            string.ascii_uppercase + string.digits, k=6))
+        respuesta = self._cliente_socket.enviar_y_recibir({
+            "type": "CREATE_ROOM",
+            "nombre": f"Sala de {self._usuario.nombres}",
+            "codigo": codigo,
+            "idHost": self._usuario.id_usuario
+        })
+        if respuesta.get("status") == "success":
+            self._on_entrar_sala(codigo, True, respuesta["idSala"])
+\end{lstlisting}
+
+\subsubsection{PantallaSala}
+\texttt{Cliente/pantallas/pantalla\_sala.py}
+
+Pantalla principal de la sala. Integra chat, video y transferencia de archivos:
+
+\begin{lstlisting}
+class PantallaSala(tk.Frame):
+    def _enviar_mensaje(self):
+        texto = self._entrada_msg.get().strip()
+        self._cliente_socket.enviar({
+            "type": "CHAT_MESSAGE",
+            "roomCode": self._codigo_sala,
+            "userName": self._usuario.nombres,
+            "message": texto
+        })
+
+    def _enviar_archivo_thread(self, ruta, nombre, tamano):
+        with open(ruta, "rb") as f:
+            datos = base64.b64encode(f.read()).decode()
+        self._cliente_socket.enviar({
+            "type": "FILE_START", "roomCode": self._codigo_sala,
+            "fileName": nombre, "fileSize": tamano
+        })
+        for i in range(0, len(datos), 1500):
+            self._cliente_socket.enviar({
+                "type": "FILE_CHUNK", "roomCode": self._codigo_sala,
+                "fileName": nombre, "data": datos[i:i+1500]
+            })
+\end{lstlisting}
+
+\subsubsection{PanelVideo}
+\texttt{Cliente/pantallas/pantalla\_video.py}
+
+Panel que muestra frames de video desde base64:
+
+\begin{lstlisting}
+class PanelVideo(tk.Frame):
+    def actualizar_frame(self, datos_b64):
+        img_data = base64.b64decode(datos_b64)
+        img = Image.open(io.BytesIO(img_data))
+        img = img.resize((self._width, self._height), Image.LANCZOS)
+        self._imagen_tk = ImageTk.PhotoImage(img)
+        self._label_video.config(image=self._imagen_tk, text="")
+\end{lstlisting}
+
+\section{Pilares de la Programaci\'on Orientada a Objetos}
+
+El sistema aplica los cuatro pilares fundamentales de la POO, detallados a continuaci\'on con fragmentos de c\'odigo extra\'idos del proyecto.
+
+\subsection{Encapsulamiento}
+
+Todas las clases emplean atributos privados (prefijo \texttt{\_}) y exponen \'unicamente lo necesario mediante propiedades de solo lectura o m\'etodos p\'ublicos.
+
+\noindent\textbf{Ejemplo:} \texttt{Cliente/modelos/usuario.py}
+
+\begin{lstlisting}
+class Usuario:
+    def __init__(self, id_usuario, nombres, correo, rol):
+        self._id_usuario = id_usuario
+        self._nombres = nombres
+        self._correo = correo
+        self._rol = rol
+
+    @property
+    def id_usuario(self):
+        return self._id_usuario
+
+    @property
+    def nombres(self):
+        return self._nombres
+
+    def es_host(self):
+        return self._rol.lower() == "host"
+\end{lstlisting}
+
+Los atributos \texttt{\_id\_usuario}, \texttt{\_nombres}, \texttt{\_correo} y \texttt{\_rol} solo son accesibles mediante \texttt{@property}. La l\'ogica de verificaci\'on de rol queda encapsulada en \texttt{es\_host()}.
+
+\noindent\textbf{Ejemplo:} \texttt{Servidor/servidor.py}
+
+\begin{lstlisting}
+class Servidor:
+    def __init__(self, host="0.0.0.0", puerto=5000):
+        self._host = host
+        self._puerto = puerto
+        self._socket = None
+        self._activo = False
+        self._clientes = []
+        self._salas = {}
+        self._lock = threading.Lock()
+
+    def iniciar(self):
+        ...
+    def detener(self):
+        ...
+    def reenviar_a_sala(self, codigo_sala, mensaje, emisor=None):
+        ...
+\end{lstlisting}
+
+El estado interno del servidor es privado; la interacci\'on externa ocurre solo a trav\'es de los m\'etodos p\'ublicos \texttt{iniciar()}, \texttt{detener()}, \texttt{remover\_cliente()} y \texttt{reenviar\_a\_sala()}.
+
+\subsection{Herencia}
+
+Las clases de la interfaz gr\'afica heredan de componentes Tkinter para reutilizar su funcionalidad y extenderla con l\'ogica de negocio.
+
+\noindent\textbf{Ejemplo:} \texttt{Cliente/main.py}
+
+\begin{lstlisting}
+class MainApp(tk.Tk):                    # Herencia de ventana principal
+    def __init__(self, host, puerto):
+        super().__init__()
+        ...
+        self._frame_actual = None
+        self._mostrar_login()
+\end{lstlisting}
+
+\noindent\textbf{Ejemplo:} \texttt{Cliente/pantallas/pantalla\_video.py}
+
+\begin{lstlisting}
+class PanelVideo(tk.Frame):              # Herencia de Frame
+    def __init__(self, master, usuario_nombre="", width=240, height=180, bg="#222"):
+        super().__init__(master, bg=bg, width=width, height=height)
+        self.pack_propagate(False)
+        ...
+\end{lstlisting}
+
+Otras clases que siguen el mismo patr\'on: \texttt{LoginFrame(tk.Frame)}, \texttt{PantallaPrincipal(tk.Frame)} y \texttt{PantallaSala(tk.Frame)}. Todas heredan los m\'etodos de gesti\'on de geometr\'ia y el bucle de eventos de Tkinter.
+
+\subsection{Polimorfismo}
+
+El polimorfismo se manifiesta en tres \'areas clave del sistema.
+
+\noindent\textbf{Frames intercambiables:} En \texttt{MainApp}, la variable \texttt{self.\_frame\_actual} puede contener cualquier subclase de \texttt{tk.Frame} (\texttt{LoginFrame}, \texttt{PantallaPrincipal}, \texttt{PantallaSala}) y se invocan m\'etodos comunes como \texttt{pack()} y \texttt{destroy()} sin conocer el tipo concreto.
+
+\begin{lstlisting}
+class MainApp(tk.Tk):
+    def _mostrar_login(self):
+        if self._frame_actual:
+            self._frame_actual.destroy()
+        self._frame_actual = LoginFrame(self, ...)
+        self._frame_actual.pack(fill=tk.BOTH, expand=True)
+
+    def _mostrar_principal(self):
+        if self._frame_actual:
+            self._frame_actual.destroy()
+        self._frame_actual = PantallaPrincipal(self, ...)
+        self._frame_actual.pack(fill=tk.BOTH, expand=True)
+\end{lstlisting}
+
+\noindent\textbf{Backends de c\'amara:} Los m\'etodos \texttt{\_capturar\_con\_opencv()} y \texttt{\_capturar\_con\_ffmpeg()} implementan la misma interfaz conceptual y se seleccionan en tiempo de ejecuci\'on.
+
+\begin{lstlisting}
+def _capturar_y_enviar(self):
+    if self._backend_video == "opencv":
+        self._capturar_con_opencv()
+    else:
+        self._capturar_con_ffmpeg()
+\end{lstlisting}
+
+\noindent\textbf{Despacho de mensajes:} El servidor procesa todos los mensajes entrantes con un \'unico m\'etodo que deriva cada tipo a su manejador espec\'ifico.
+
+\begin{lstlisting}
+def _procesar_mensaje(self, mensaje):
+    tipo = mensaje.get("type")
+    if tipo == Protocolo.LOGIN_REQUEST:
+        self._manejar_login(mensaje)
+    elif tipo == Protocolo.CREATE_ROOM:
+        self._manejar_crear_sala(mensaje)
+    elif tipo == Protocolo.CHAT_MESSAGE:
+        self._manejar_chat(mensaje)
+    elif tipo == Protocolo.LEAVE_ROOM:
+        self._sala_actual = None
+\end{lstlisting}
+
+\subsection{Abstracci\'on}
+
+Cada clase compleja expone una interfaz reducida que oculta los detalles de implementaci\'on subyacentes.
+
+\noindent\textbf{Ejemplo:} \texttt{Cliente/cliente\_socket.py}
+
+\begin{lstlisting}
+class ClienteSocket:
+    def conectar(self): ...
+    def desconectar(self): ...
+    def enviar(self, datos): ...
+    def enviar_y_recibir(self, datos): ...
+    def registrar_callback(self, tipo, callback): ...
+    def remover_callback(self, tipo): ...
+\end{lstlisting}
+
+Esta clase abstrae toda la complejidad de la comunicaci\'on por sockets TCP: creaci\'on del socket, serializaci\'on JSON, threading para escucha continua, buffer de mensajes y dispatch mediante callbacks.
+
+\noindent\textbf{Ejemplo:} \texttt{Servidor/base\_datos.py}
+
+\begin{lstlisting}
+class BaseDatos:
+    def conectar(self): ...
+    def desconectar(self): ...
+    def inicializar(self): ...
+    @staticmethod
+    def hash_clave(clave): ...
+\end{lstlisting}
+
+Abstrae SQLite (creaci\'on de tablas, conexi\'on, hashing de contrase\~nas) en solo cuatro operaciones.
+
+\noindent\textbf{Ejemplo:} \texttt{Servidor/auth\_service.py}
+
+\begin{lstlisting}
+class AuthService:
+    def validar_login(self, correo, clave):
+        password_hash = BaseDatos.hash_clave(clave)
+        cursor.execute(
+            "SELECT IdUsuario, Nombres, Rol FROM Usuarios "
+            "WHERE Correo = ? AND PasswordHash = ? AND Activo = 1",
+            (correo, password_hash)
+        )
+        resultado = cursor.fetchone()
+        if resultado:
+            return {"status": "success", ...}
+        return {"status": "error", "message": "Credenciales incorrectas"}
+\end{lstlisting}
+
+Oculta las consultas SQL y el hasheo detr\'as de un \'unico m\'etodo \texttt{validar\_login()}. Quien lo invoca no necesita conocer la estructura de la base de datos.
+
+\noindent\textbf{Ejemplo:} \texttt{Cliente/pantallas/pantalla\_video.py}
+
+\begin{lstlisting}
+class PanelVideo(tk.Frame):
+    def actualizar_frame(self, datos_b64): ...
+    def mostrar_placeholder(self, texto="Sin video"): ...
+\end{lstlisting}
+
+Oculta los detalles de PIL/Tkinter (decodificaci\'on base64, redimensi\'on, conversi\'on a PhotoImage) detr\'as de una interfaz de dos m\'etodos.
+
+\section{Patrones de Dise\~no Implementados}
+
+A continuaci\'on se describen los patrones de dise\~no identificados en la implementaci\'on del sistema.
+
+\subsection{Singleton}
+
+\emph{Propósito}: Garantizar que una clase tenga una \'unica instancia y proporcionar un punto de acceso global a ella.
+
+\medskip
+\noindent\textbf{Implementaci\'on}: \texttt{Servidor/base\_datos.py}
+
+La clase \texttt{BaseDatos} sobreescribe \texttt{\_\_new\_\_} para retornar siempre la misma instancia. La inicializaci\'on del esquema se ejecuta una sola vez mediante una bandera \texttt{\_inicializada}.
+
+\begin{lstlisting}
+class BaseDatos:
+    _instancia = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instancia is None:
+            cls._instancia = super().__new__(cls)
+        return cls._instancia
+\end{lstlisting}
+
+Todas las llamadas a \texttt{BaseDatos()} desde \texttt{manejador\_cliente.py} y \texttt{auth\_service.py} obtienen la misma instancia \'unica.
+
+\subsection{Observer}
+
+\emph{Propósito}: Definir una dependencia de uno a muchos entre objetos, de modo que cuando un objeto cambie su estado, todos sus dependientes sean notificados autom\'aticamente.
+
+\medskip
+\noindent\textbf{Implementaci\'on}: \texttt{Cliente/cliente\_socket.py}
+
+La clase \texttt{ClienteSocket} mantiene un diccionario \texttt{\_callbacks} que asocia tipos de mensaje con funciones manejadoras. Cuando llega un mensaje desde el servidor, se invoca la funci\'on registrada para ese tipo:
+
+\begin{lstlisting}
+class ClienteSocket:
+    def registrar_callback(self, tipo, callback):
+        self._callbacks[tipo] = callback
+
+    def _escuchar(self):
+        while self._conectado:
+            mensaje = json.loads(linea)
+            tipo = mensaje.get("type")
+            cb = self._callbacks.get(tipo)
+            if cb:
+                cb(mensaje)
+\end{lstlisting}
+
+Las pantallas (\texttt{PantallaPrincipal}, \texttt{PantallaSala}) se suscriben como observadores mediante \texttt{registrar\_callback()} y se desuscriben al salir con \texttt{remover\_callback()}.
+
+\subsection{Strategy}
+
+\emph{Propósito}: Definir una familia de algoritmos, encapsular cada uno y hacerlos intercambiables.
+
+\medskip
+\noindent\textbf{Implementaci\'on}: \texttt{Cliente/pantallas/pantalla\_sala.py}
+
+El sistema selecciona en tiempo de ejecuci\'on entre dos estrategias de captura de video: \texttt{\_capturar\_con\_opencv()} y \texttt{\_capturar\_con\_ffmpeg()}. El m\'etodo \texttt{\_detectar\_backend()} elige la estrategia disponible y \texttt{\_capturar\_y\_enviar()} delega en ella:
+
+\begin{lstlisting}
+def _detectar_backend(self):
+    try:
+        import cv2
+        self._backend_video = "opencv"
+    except ImportError:
+        self._backend_video = "ffmpeg"
+
+def _capturar_y_enviar(self):
+    if self._backend_video == "opencv":
+        self._capturar_con_opencv()
+    else:
+        self._capturar_con_ffmpeg()
+\end{lstlisting}
+
+\subsection{Facade}
+
+\emph{Propósito}: Proporcionar una interfaz unificada para un conjunto de interfaces de un subsistema.
+
+\medskip
+\noindent\textbf{Implementaci\'on}: \texttt{Servidor/manejador\_cliente.py}
+
+\texttt{ManejadorCliente} act\'ua como una fachada que orquesta tres subsistemas: \texttt{AuthService} (autenticaci\'on), \texttt{BaseDatos} (persistencia) y \texttt{Servidor} (difusi\'on en salas). El exterior (\texttt{servidor.py}) solo invoca \texttt{manejador.iniciar()}, y la fachada se encarga de despachar cada mensaje al subsistema correspondiente.
+
+\subsection{Command}
+
+\emph{Propósito}: Encapsular una solicitud como un objeto, permitiendo parametrizar clientes con distintas solicitudes.
+
+\medskip
+\noindent\textbf{Implementaci\'on}: \texttt{Servidor/protocolo.py} y \texttt{Servidor/manejador\_cliente.py}
+
+El protocolo define constantes (\texttt{LOGIN\_REQUEST}, \texttt{CREATE\_ROOM}, \texttt{JOIN\_ROOM\_REQUEST}, etc.) que act\'uan como comandos. \texttt{ManejadorCliente.\_procesar\_mensaje()} funciona como despachador: lee el campo \texttt{type} del mensaje JSON y lo enruta al manejador correspondiente.
+
+\subsection{Template Method}
+
+\emph{Propósito}: Definir el esqueleto de un algoritmo en una operaci\'on, delegando algunos pasos a las subclases.
+
+\medskip
+\noindent\textbf{Implementaci\'on}: \texttt{Cliente/pantallas/pantalla\_sala.py}
+
+El ciclo de vida de la c\'amara sigue un algoritmo fijo: iniciar captura, capturar y enviar fotogramas, detener captura. Los pasos concretos (\texttt{\_capturar\_con\_opencv()} o \texttt{\_capturar\_con\_ffmpeg()}) se inyectan en ese esqueleto.
+
+\subsection{Factory Method}
+
+\emph{Propósito}: Definir una interfaz para crear un objeto, pero dejar que las subclases decidan qu\'e clase instanciar.
+
+\medskip
+\noindent\textbf{Implementaci\'on}: \texttt{Cliente/main.py}
+
+\texttt{MainApp} implementa m\'etodos factor\'ia (\texttt{\_mostrar\_login()}, \texttt{\_mostrar\_principal()}, \texttt{\_mostrar\_sala()}) que destruyen el frame actual e instancian la subclase de \texttt{tk.Frame} correspondiente:
+
+\begin{lstlisting}
+def _mostrar_login(self):
+    if self._frame_actual:
+        self._frame_actual.destroy()
+    self._frame_actual = LoginFrame(self, self._conectar)
+    self._frame_actual.pack(fill=tk.BOTH, expand=True)
+\end{lstlisting}
+
+\section{Protocolo de Comunicaci\'on}
+
+Los mensajes se env\'ian en JSON sobre TCP, delimitados por \verb|\n|.
+
+\begin{table}[htbp]
+    \centering
+    \small
+    \begin{tabular}{>{\raggedright\arraybackslash}p{4.5cm}p{2.5cm}p{8.5cm}}
+    \toprule
+    \textbf{Tipo} & \textbf{Direcci\'on} & \textbf{Campos} \\
+    \midrule
+    LOGIN\_REQUEST   & Cliente $\rightarrow$ Servidor & correo, clave \\
+    LOGIN\_RESPONSE  & Servidor $\rightarrow$ Cliente & status, idUsuario, nombres, rol \\
+    CREATE\_ROOM     & Cliente $\rightarrow$ Servidor & codigo, nombre, idHost \\
+    JOIN\_ROOM\_REQUEST & Cliente $\rightarrow$ Servidor & codigo, idUsuario \\
+    WAITING\_ROOM\_UPDATE & Servidor $\rightarrow$ Host & idSala, solicitanteId, solicitanteNombre \\
+    ADMIT\_USER      & Host $\rightarrow$ Servidor & idSala, idUsuario \\
+    REJECT\_USER     & Host $\rightarrow$ Servidor & idSala, idUsuario \\
+    CHAT\_MESSAGE    & Cliente $\rightarrow$ Sala & roomCode, userName, message \\
+    FILE\_START      & Cliente $\rightarrow$ Sala & roomCode, fileName, fileSize \\
+    FILE\_CHUNK      & Cliente $\rightarrow$ Sala & roomCode, fileName, data \\
+    FILE\_END        & Cliente $\rightarrow$ Sala & roomCode, fileName \\
+    CAMERA\_FRAME    & Cliente $\rightarrow$ Sala & roomCode, userName, data (base64) \\
+    VIDEO\_START     & Cliente $\rightarrow$ Sala & roomCode, userName \\
+    VIDEO\_STOP      & Cliente $\rightarrow$ Sala & roomCode, userName \\
+    LEAVE\_ROOM      & Cliente $\rightarrow$ Servidor & roomCode \\
+    \bottomrule
+    \end{tabular}
+    \caption{Tipos de mensaje del protocolo}
+\end{table}
+
+\section{Manual de Instalaci\'on y Ejecuci\'on}
+
+\subsection{Requisitos}
+\begin{itemize}
+    \item Python 3.10 o superior
+    \item Pillow (instalar con \texttt{pip install -r requirements.txt})
+    \item Opcional: OpenCV (\texttt{pip install opencv-python}) o ffmpeg
+\end{itemize}
+
+\subsection{Ejecuci\'on}
+\begin{enumerate}
+    \item Iniciar el servidor:
+    \begin{lstlisting}
+python -m Servidor.servidor
+    \end{lstlisting}
+    \item Iniciar uno o m\'as clientes:
+    \begin{lstlisting}
+python -m Cliente.main
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Datos de Prueba}
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{p{2.5cm}p{3cm}p{1.5cm}p{1.5cm}}
+    \toprule
+    \textbf{Nombre} & \textbf{Correo} & \textbf{Clave} & \textbf{Rol} \\
+    \midrule
+    Luis Tasayco  & luis@email.com   & 123456 & Host \\
+    Ana Torres    & ana@email.com    & 123456 & Usuario \\
+    Carlos Ruiz   & carlos@email.com & 123456 & Usuario \\
+    \bottomrule
+    \end{tabular}
+    \caption{Usuarios de prueba}
+\end{table}
+
+\section{Conclusiones}
+
+\begin{itemize}
+    \item Se implement\'o un prototipo funcional de videoconferencia con arquitectura cliente-servidor.
+    \item Los sockets TCP con protocolo JSON proporcionan una base s\'olida para comunicaci\'on en tiempo real.
+    \item Los cuatro pilares de la POO -- encapsulamiento, herencia, polimorfismo y abstracci\'on -- fueron aplicados consistentemente en todo el c\'odigo.
+    \item Se identificaron y aplicaron siete patrones de dise\~no: Singleton, Observer, Strategy, Facade, Command, Template Method y Factory Method.
+    \item La POO permiti\'o organizar el c\'odigo en clases especializadas con responsabilidades claras.
+    \item La concurrencia con hilos permite atender m\'ultiples clientes simult\'aneamente.
+    \item La transmisi\'on de video se logr\'o mediante captura, compresi\'on JPEG y codificaci\'on base64.
+\end{itemize}
+
+\end{document}
