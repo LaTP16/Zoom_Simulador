@@ -17,7 +17,7 @@ class PantallaSala(ctk.CTkFrame):
     """
 
     def __init__(self, master, usuario, cliente_socket, codigo_sala, es_host, id_sala, on_salir):
-        super().__init__(master)
+        super().__init__(master, fg_color="#1a1a1a")
         self._usuario = usuario
         self._cliente_socket = cliente_socket
         self._codigo_sala = codigo_sala
@@ -30,7 +30,6 @@ class PantallaSala(ctk.CTkFrame):
         self._download_dir = os.path.join(os.path.dirname(__file__), "..", "descargas")
         os.makedirs(self._download_dir, exist_ok=True)
 
-
         self._crear_widgets()
         self._inicializar_gestores()
         self._registrar_callbacks()
@@ -41,117 +40,240 @@ class PantallaSala(ctk.CTkFrame):
     # ------------------------------------------------------------------
 
     def _crear_widgets(self):
-        ctk.CTkLabel(self, text=f"Sala: {self._codigo_sala}",
-                  font=("Arial", 14, "bold")).pack(pady=(10, 5))
+        # Barra superior (Header)
+        header_bar = ctk.CTkFrame(self, fg_color="#242424", height=45, corner_radius=0)
+        header_bar.pack(fill=tk.X, side=tk.TOP)
+        header_bar.pack_propagate(False)
 
-        # Área de video
-        self._frame_video_container = ctk.CTkFrame(self, fg_color="#1a1a1a", height=200)
-        self._frame_video_container.pack(fill=tk.X, padx=10, pady=(0, 5))
-        self._frame_video_container.pack_propagate(False)
+        # Indicador de seguridad
+        sec_label = ctk.CTkLabel(header_bar, text="🛡️ Conexión Encriptada", font=("Helvetica Neue", 11, "bold"), text_color="#4CAF50")
+        sec_label.pack(side=tk.LEFT, padx=15)
 
-        self._frame_video_panels = ctk.CTkFrame(self._frame_video_container, fg_color="transparent")
-        self._frame_video_panels.pack(fill=tk.BOTH, expand=True)
+        # Código de Sala
+        room_label = ctk.CTkLabel(header_bar, text=f"Reunión de Zoom  |  Sala: {self._codigo_sala}", font=("Helvetica Neue", 13, "bold"), text_color="#ffffff")
+        room_label.pack(side=tk.LEFT, expand=True)
 
-        # Controles de cámara y micrófono
-        frame_controles = ctk.CTkFrame(self, fg_color="transparent")
-        frame_controles.pack(fill=tk.X, padx=10, pady=(0, 5))
+        # Info del usuario actual
+        user_label = ctk.CTkLabel(header_bar, text=f"👤 {self._usuario.nombres} ({self._usuario.rol})", font=("Helvetica Neue", 11), text_color="#aaaaaa")
+        user_label.pack(side=tk.RIGHT, padx=15)
 
-        self._btn_camara = ctk.CTkButton(
-            frame_controles, text="📷 Iniciar Cámara",
-            command=self._toggle_camara, fg_color="#4CAF50", text_color="white", width=140, font=("Arial", 11, "bold")
-        )
-        self._btn_camara.pack(side=tk.LEFT, padx=5)
+        # Barra inferior de controles (Bottom Toolbar)
+        bottom_toolbar = ctk.CTkFrame(self, fg_color="#242424", height=55, corner_radius=0)
+        bottom_toolbar.pack(fill=tk.X, side=tk.BOTTOM)
+        bottom_toolbar.pack_propagate(False)
+
+        # Contenedor izquierdo para controles multimedia
+        multimedia_frame = ctk.CTkFrame(bottom_toolbar, fg_color="transparent")
+        multimedia_frame.pack(side=tk.LEFT, padx=10)
 
         self._btn_mic = ctk.CTkButton(
-            frame_controles, text="🎤 Iniciar Micrófono",
-            command=self._toggle_mic, fg_color="#4CAF50", text_color="white", width=150, font=("Arial", 11, "bold")
+            multimedia_frame, text="🎤 Iniciar Micrófono",
+            command=self._toggle_mic, fg_color="#4CAF50", hover_color="#3e8e41", text_color="white", width=150, height=34, font=("Helvetica Neue", 11, "bold"),
+            corner_radius=6
         )
         self._btn_mic.pack(side=tk.LEFT, padx=5)
 
-        self._label_cam_status = ctk.CTkLabel(
-            frame_controles, text="", text_color="#888", font=("Arial", 9)
+        self._btn_camara = ctk.CTkButton(
+            multimedia_frame, text="📷 Iniciar Cámara",
+            command=self._toggle_camara, fg_color="#4CAF50", hover_color="#3e8e41", text_color="white", width=140, height=34, font=("Helvetica Neue", 11, "bold"),
+            corner_radius=6
         )
-        self._label_cam_status.pack(side=tk.LEFT, padx=(5, 0))
+        self._btn_camara.pack(side=tk.LEFT, padx=5)
 
-        # Layout principal: panel izquierdo + chat
+        self._label_cam_status = ctk.CTkLabel(
+            multimedia_frame, text="", text_color="#aaaaaa", font=("Helvetica Neue", 10)
+        )
+        self._label_cam_status.pack(side=tk.LEFT, padx=10)
+
+        # Contenedor derecho para botón de salida
+        exit_frame = ctk.CTkFrame(bottom_toolbar, fg_color="transparent")
+        exit_frame.pack(side=tk.RIGHT, padx=15)
+
+        salir_texto = "Finalizar Sala" if self._es_host else "Salir de la Sala"
+        btn_salir = ctk.CTkButton(
+            exit_frame, text=salir_texto, command=self._salir,
+            fg_color="#f44336", hover_color="#d32f2f", text_color="white", height=34, font=("Helvetica Neue", 11, "bold"),
+            corner_radius=6
+        )
+        btn_salir.pack()
+
+        # Área de video
+        self._frame_video_container = ctk.CTkFrame(
+            self, 
+            fg_color="#0e0e10", 
+            height=200,
+            corner_radius=12,
+            border_width=1,
+            border_color="#2d2d2d"
+        )
+        self._frame_video_container.pack(fill=tk.X, padx=15, pady=(15, 5))
+        self._frame_video_container.pack_propagate(False)
+
+        self._frame_video_panels = ctk.CTkFrame(self._frame_video_container, fg_color="transparent")
+        self._frame_video_panels.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+        # Layout principal: panel izquierdo (sidebar) + chat
         frame_principal = ctk.CTkFrame(self, fg_color="transparent")
-        frame_principal.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+        frame_principal.pack(fill=tk.BOTH, expand=True, padx=15, pady=(5, 15))
 
         self._crear_panel_izquierdo(frame_principal)
         self._crear_panel_chat(frame_principal)
 
-        ctk.CTkButton(self, text="Salir de la Sala", command=self._salir,
-                  fg_color="#f44336", text_color="white", font=("Arial", 11, "bold")).pack(pady=10)
-
     def _crear_panel_izquierdo(self, padre):
-        frame_izq = ctk.CTkFrame(padre, width=200, fg_color="transparent")
-        frame_izq.pack(side=tk.LEFT, fill=tk.BOTH, expand=False, padx=(0, 5))
+        # Sidebar con fondo y bordes definidos
+        frame_izq = ctk.CTkFrame(
+            padre, 
+            width=220, 
+            fg_color="#242424", 
+            corner_radius=10, 
+            border_width=1, 
+            border_color="#2d2d2d"
+        )
+        frame_izq.pack(side=tk.LEFT, fill=tk.BOTH, expand=False, padx=(0, 8))
         frame_izq.pack_propagate(False)
 
         if self._es_host:
-            ctk.CTkLabel(frame_izq, text="Sala de Espera",
-                     font=("Arial", 11, "bold")).pack(pady=(0, 5))
+            ctk.CTkLabel(
+                frame_izq, 
+                text="Sala de Espera",
+                font=("Helvetica Neue", 12, "bold"),
+                text_color="#ffffff"
+            ).pack(pady=(12, 4))
+            
             self._lista_espera = tk.Listbox(
-                frame_izq, height=8, bg="#2b2b2b", fg="white",
-                selectbackground="#1f538d", borderwidth=0, highlightthickness=0
+                frame_izq, 
+                height=6, 
+                bg="#1a1a1a", 
+                fg="#eeeeee",
+                selectbackground="#0E71EB", 
+                selectforeground="white",
+                font=("Helvetica Neue", 11),
+                borderwidth=0, 
+                highlightthickness=1,
+                highlightbackground="#333333",
+                highlightcolor="#0E71EB",
+                relief="flat"
             )
-            self._lista_espera.pack(fill=tk.BOTH, expand=True)
+            self._lista_espera.pack(fill=tk.BOTH, expand=True, padx=10)
 
             frame_botones = ctk.CTkFrame(frame_izq, fg_color="transparent")
-            frame_botones.pack(fill=tk.X, pady=(0, 10))
+            frame_botones.pack(fill=tk.X, pady=8, padx=10)
+            
             ctk.CTkButton(
                 frame_botones, text="Admitir", command=self._admitir,
-                fg_color="#4CAF50", text_color="white", width=80, font=("Arial", 11, "bold")
-            ).pack(side=tk.LEFT, padx=2)
+                fg_color="#4CAF50", hover_color="#3e8e41", text_color="white", width=95, height=28, font=("Helvetica Neue", 11, "bold"),
+                corner_radius=6
+            ).pack(side=tk.LEFT, padx=(0, 4))
+            
             ctk.CTkButton(
                 frame_botones, text="Rechazar", command=self._rechazar,
-                fg_color="#f44336", text_color="white", width=80, font=("Arial", 11, "bold")
-            ).pack(side=tk.LEFT, padx=2)
+                fg_color="#f44336", hover_color="#d32f2f", text_color="white", width=95, height=28, font=("Helvetica Neue", 11, "bold"),
+                corner_radius=6
+            ).pack(side=tk.RIGHT, padx=(4, 0))
 
-        ctk.CTkLabel(frame_izq, text="Conectados",
-                 font=("Arial", 11, "bold")).pack(pady=(0, 5))
+        ctk.CTkLabel(
+            frame_izq, 
+            text="Participantes",
+            font=("Helvetica Neue", 12, "bold"),
+            text_color="#ffffff"
+        ).pack(pady=(12, 4))
+        
         self._lista_conectados = tk.Listbox(
-            frame_izq, height=8, bg="#2b2b2b", fg="white",
-            selectbackground="#1f538d", borderwidth=0, highlightthickness=0
+            frame_izq, 
+            height=8, 
+            bg="#1a1a1a", 
+            fg="#eeeeee",
+            selectbackground="#0E71EB", 
+            selectforeground="white",
+            font=("Helvetica Neue", 11),
+            borderwidth=0, 
+            highlightthickness=1,
+            highlightbackground="#333333",
+            highlightcolor="#0E71EB",
+            relief="flat"
         )
-        self._lista_conectados.pack(fill=tk.BOTH, expand=True)
+        self._lista_conectados.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
 
         if self._es_host:
             ctk.CTkButton(
-                frame_izq, text="Expulsar", command=self._expulsar,
-                fg_color="#f44336", text_color="white", font=("Arial", 11, "bold")
-            ).pack(fill=tk.X, pady=(5, 0))
+                frame_izq, text="Expulsar de Sala", command=self._expulsar,
+                fg_color="#f44336", hover_color="#d32f2f", text_color="white", height=30, font=("Helvetica Neue", 11, "bold"),
+                corner_radius=6
+            ).pack(fill=tk.X, padx=10, pady=(0, 12))
 
     def _crear_panel_chat(self, padre):
-        frame_chat = ctk.CTkFrame(padre, fg_color="transparent")
+        # Panel de chat con fondo y bordes definidos
+        frame_chat = ctk.CTkFrame(
+            padre, 
+            fg_color="#242424", 
+            corner_radius=10, 
+            border_width=1, 
+            border_color="#2d2d2d"
+        )
         frame_chat.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-        ctk.CTkLabel(frame_chat, text="Chat", font=("Arial", 11, "bold")).pack()
+        ctk.CTkLabel(
+            frame_chat, 
+            text="Mensajes de Reunión", 
+            font=("Helvetica Neue", 12, "bold"),
+            text_color="#ffffff"
+        ).pack(pady=(12, 4))
+
+        # Texto del chat con padding interno y estilo
         self._chat_text = scrolledtext.ScrolledText(
-            frame_chat, height=15, state=tk.DISABLED, bg="#2b2b2b", fg="white",
-            insertbackground="white", borderwidth=0, highlightthickness=0
+            frame_chat, 
+            height=15, 
+            state=tk.DISABLED, 
+            bg="#1a1a1a", 
+            fg="#eeeeee",
+            insertbackground="white", 
+            borderwidth=0, 
+            highlightthickness=1,
+            highlightbackground="#333333",
+            highlightcolor="#0E71EB",
+            font=("Helvetica Neue", 11),
+            padx=10,
+            pady=10
         )
-        self._chat_text.pack(fill=tk.BOTH, expand=True)
+        self._chat_text.pack(fill=tk.BOTH, expand=True, padx=10)
 
+        # Área de entrada de mensajes
         frame_input = ctk.CTkFrame(frame_chat, fg_color="transparent")
-        frame_input.pack(fill=tk.X, pady=5)
+        frame_input.pack(fill=tk.X, pady=10, padx=10)
 
-        self._entrada_msg = ctk.CTkEntry(frame_input, font=("Arial", 11))
-        self._entrada_msg.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        self._entrada_msg = ctk.CTkEntry(
+            frame_input, 
+            placeholder_text="Escribe un mensaje...",
+            font=("Helvetica Neue", 11),
+            height=32,
+            corner_radius=6,
+            fg_color="#1a1a1a",
+            border_color="#444444",
+            text_color="#ffffff",
+            placeholder_text_color="#888888"
+        )
+        self._entrada_msg.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 6))
         self._entrada_msg.bind("<Return>", lambda e: self._enviar_mensaje())
 
+        # Botón Enviar
         ctk.CTkButton(
             frame_input, text="Enviar", command=self._enviar_mensaje,
-            fg_color="#2196F3", text_color="white", width=70, font=("Arial", 11, "bold")
+            fg_color="#0E71EB", hover_color="#0b5ed7", text_color="white", width=70, height=32, font=("Helvetica Neue", 11, "bold"),
+            corner_radius=6
         ).pack(side=tk.RIGHT, padx=(2, 0))
+
+        # Botón Archivo
         ctk.CTkButton(
-            frame_input, text="Archivo", command=self._enviar_archivo,
-            fg_color="#9C27B0", text_color="white", width=70, font=("Arial", 11, "bold")
-        ).pack(side=tk.RIGHT, padx=(0, 2))
+            frame_input, text="📁 Archivo", command=self._enviar_archivo,
+            fg_color="#9C27B0", hover_color="#7b1fa2", text_color="white", width=85, height=32, font=("Helvetica Neue", 11, "bold"),
+            corner_radius=6
+        ).pack(side=tk.RIGHT, padx=(2, 2))
+
+        # Botón Descargas
         ctk.CTkButton(
-            frame_input, text="Abrir descargas",
-            command=self._abrir_carpeta_descargas,
-            fg_color="#607D8B", text_color="white", width=120, font=("Arial", 11, "bold")
+            frame_input, text="📥 Descargas", command=self._abrir_carpeta_descargas,
+            fg_color="#607D8B", hover_color="#455a64", text_color="white", width=95, height=32, font=("Helvetica Neue", 11, "bold"),
+            corner_radius=6
         ).pack(side=tk.RIGHT, padx=(0, 2))
 
     # ------------------------------------------------------------------

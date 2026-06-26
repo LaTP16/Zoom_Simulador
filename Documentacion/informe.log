@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.24.0 (TeX Live 2026/Arch Linux)  (format=lualatex 2026.6.24)  26 JUN 2026 17:29
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026/Arch Linux)  (format=lualatex 2026.6.24)  26 JUN 2026 18:24
  restricted system commands enabled.
 **informe.tex
 (./informe.tex
@@ -539,7 +539,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 181--181
 []|\OT1/lmr/m/n/12 Ar-chi-vos-Com-par-ti-
  []
 
-<imagenes/Entidad-Relacion.png, id=316, 538.01pt x 385.44pt>
+<imagenes/Entidad-Relacion.png, id=326, 538.01pt x 385.44pt>
 File: imagenes/Entidad-Relacion.png Graphic file (type png)
 <use imagenes/Entidad-Relacion.png>
 Package luatex.def Info: imagenes/Entidad-Relacion.png  used on input line 191.
@@ -552,10 +552,10 @@ warning  (pdf backend): ignoring duplicate destination with the name 'table.2'
 
 warning  (pdf backend): ignoring duplicate destination with the name 'table.3'
 ]
-<imagenes/casos_de_uso.png, id=343, 770.88pt x 991.705pt>
+<imagenes/casos_de_uso.png, id=353, 770.88pt x 991.705pt>
 File: imagenes/casos_de_uso.png Graphic file (type png)
 <use imagenes/casos_de_uso.png>
-Package luatex.def Info: imagenes/casos_de_uso.png  used on input line 203.
+Package luatex.def Info: imagenes/casos_de_uso.png  used on input line 205.
 (luatex.def)             Requested size: 409.71692pt x 527.0841pt.
  [7
 warning  (pdf backend): ignoring duplicate destination with the name 'figure.1'
@@ -566,6 +566,8 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 warning  (pdf backend): ignoring duplicate destination with the name 'figure.2'
 <./imagenes/casos_de_uso.png>] [9
 warning  (pdf backend): ignoring duplicate destination with the name 'table.4'
+
+warning  (pdf backend): ignoring duplicate destination with the name 'table.5'
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 290--295
 \OT1/lmr/m/n/10.95 3. El ser-vi-dor no-ti-fi-ca al host con \OT1/lmtt/m/n/10.95
@@ -573,9 +575,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 290--295
  []
 
 [10
-warning  (pdf backend): ignoring duplicate destination with the name 'table.5'
-
 warning  (pdf backend): ignoring duplicate destination with the name 'table.6'
+
+warning  (pdf backend): ignoring duplicate destination with the name 'table.7'
 ]
 Underfull \hbox (badness 1152) in paragraph at lines 337--338
 []|\OT1/lmr/m/n/10.95 Cla-ve pri-ma-ria au-to-in-cre-men-ta-ble. Iden-ti-fi-ca-
@@ -583,25 +585,23 @@ dor
  []
 
 [11
-warning  (pdf backend): ignoring duplicate destination with the name 'table.7'
-
 warning  (pdf backend): ignoring duplicate destination with the name 'table.8'
+
+warning  (pdf backend): ignoring duplicate destination with the name 'table.9'
 ]
-<imagenes/secuencia.png, id=380, 670.505pt x 1032.85875pt>
+<imagenes/secuencia.png, id=390, 670.505pt x 1032.85875pt>
 File: imagenes/secuencia.png Graphic file (type png)
 <use imagenes/secuencia.png>
 Package luatex.def Info: imagenes/secuencia.png  used on input line 393.
 (luatex.def)             Requested size: 409.71692pt x 631.13037pt.
  [12
-warning  (pdf backend): ignoring duplicate destination with the name 'table.9'
-
 warning  (pdf backend): ignoring duplicate destination with the name 'table.10'
 
 warning  (pdf backend): ignoring duplicate destination with the name 'table.11'
 ] [13
 warning  (pdf backend): ignoring duplicate destination with the name 'figure.3'
 <./imagenes/secuencia.png>]
-<imagenes/actividades.png, id=397, 486.81876pt x 1072.005pt>
+<imagenes/actividades.png, id=405, 486.81876pt x 1072.005pt>
 File: imagenes/actividades.png Graphic file (type png)
 <use imagenes/actividades.png>
 Package luatex.def Info: imagenes/actividades.png  used on input line 400.
@@ -611,7 +611,7 @@ Package luatex.def Info: imagenes/actividades.png  used on input line 400.
 
 warning  (pdf backend): ignoring duplicate destination with the name 'figure.4'
 <./imagenes/actividades.png>]
-<imagenes/clases.png, id=404, 2427.0675pt x 1075.01625pt>
+<imagenes/clases.png, id=412, 2427.0675pt x 1075.01625pt>
 File: imagenes/clases.png Graphic file (type png)
 <use imagenes/clases.png>
 Package luatex.def Info: imagenes/clases.png  used on input line 410.
@@ -625,8 +625,13 @@ warning  (pdf backend): ignoring duplicate destination with the name 'figure.5'
 
 
 ]
-Underfull \hbox (badness 7133) in paragraph at lines 497--497
-\OT1/lmr/m/n/10.95 mi-nis-tra tran-si-cio-nes en-tre
+Underfull \hbox (badness 1939) in paragraph at lines 497--497
+[]|\OT1/lmr/m/n/10.95 Ven-ta-na ra^^S^^Pz de Cus-tomT-
+ []
+
+
+Underfull \hbox (badness 1137) in paragraph at lines 497--497
+\OT1/lmr/m/n/10.95 kin-ter, ad-mi-nis-tra tran-si-cio-
  []
 
 
@@ -699,10 +704,10 @@ Underfull \hbox (badness 3396) in paragraph at lines 788--789
 
 [26] [27
 warning  (pdf backend): ignoring duplicate destination with the name 'table.14'
-] [28]
+] [28] [29]
 Missing character: There is no ñ (U+00F1) in font cmr12!
 Missing character: There is no ñ (U+00F1) in font cmr12!
-[29] [30
+[30
 Missing character: There is no ñ (U+00F1) in font cmr12!
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 899--899
@@ -719,21 +724,21 @@ Overfull \hbox (21.77359pt too wide) in paragraph at lines 894--915
  [][] 
  []
 
-[31
+[31] [32
 warning  (pdf backend): ignoring duplicate destination with the name 'table.15'
 ]
 
 LaTeX Font Warning: Font shape `OT1/lmr/m/it' undefined
-(Font)              using `OT1/lmr/m/n' instead on input line 939.
+(Font)              using `OT1/lmr/m/n' instead on input line 940.
 
-[32]
-Underfull \hbox (badness 10000) in paragraph at lines 975--975
+
+Underfull \hbox (badness 10000) in paragraph at lines 976--976
 []|\OT1/lmr/m/n/12 car-
  []
 
-[33
+[33] [34
 warning  (pdf backend): ignoring duplicate destination with the name 'table.16'
-] [34] (./informe.aux
+] [35] (./informe.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
 )
@@ -745,36 +750,30 @@ L3 programming layer <2026-01-19>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-Package rerunfilecheck Warning: File `informe.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `informe.out':
-(rerunfilecheck)             Before: 6CD63E2F09402CACF1F004D0A777F87A;9731
-(rerunfilecheck)             After:  46F213B6296B230734F1AD0A4C9EB60F;10127.
+Package rerunfilecheck Info: File `informe.out' has not changed.
+(rerunfilecheck)             Checksum: 95DE8D876A50A423CE949E38F324AF44;10135.
 )
 
 Here is how much of LuaTeX's memory you used:
- 14007 strings out of 476103
- 477018,953878 words of node,token memory allocated
+ 14015 strings out of 476103
+ 381620,953878 words of node,token memory allocated
  442 words of node memory still in use:
    4 hlist, 1 vlist, 1 rule, 4 glue, 4 attribute, 55 glue_spec, 4 attribute_list
 , 1 write nodes
-   avail lists: 2:4416,3:401,4:790,5:13527,6:148,7:13259,8:40,9:22396,10:30,11:9
-78
- 35858 multiletter control sequences out of 65536+600000
+   avail lists: 1:2,2:4264,3:393,4:752,5:12939,6:114,7:12826,8:40,9:21422,10:30,
+11:941
+ 35865 multiletter control sequences out of 65536+600000
  46 fonts using 1913263 bytes
- 72i,13n,75p,437b,898s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,13n,75p,449b,898s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/typ
 e1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfon
 ts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on informe.pdf (35 pages, 479607 bytes).
+Output written on informe.pdf (36 pages, 479847 bytes).
 
-PDF statistics: 723 PDF objects out of 1000 (max. 8388607)
- 664 compressed objects within 7 object streams
- 322 named destinations out of 1000 (max. 1048576)
- 457 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 735 PDF objects out of 1000 (max. 8388607)
+ 675 compressed objects within 7 object streams
+ 323 named destinations out of 1000 (max. 1048576)
+ 473 words of extra memory for PDF output out of 10000 (max. 100000000)
 

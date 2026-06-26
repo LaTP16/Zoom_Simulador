@@ -84,7 +84,7 @@ El sistema emplea una arquitectura \textbf{cliente-servidor} basada en \textbf{s
 
 \begin{itemize}
     \item \textbf{Lenguaje:} Python 3.10+
-    \item \textbf{Interfaz gr\'afica:} Tkinter
+    \item \textbf{Interfaz gr\'afica:} CustomTkinter
     \item \textbf{Comunicaci\'on:} Sockets TCP (RFC 793)
     \item \textbf{Protocolo de mensajes:} JSON sobre TCP (RFC 8259), delimitado por \verb|\n|
     \item \textbf{Base de datos:} SQLite 3
@@ -102,7 +102,7 @@ El sistema sigue un modelo cliente-servidor. El servidor centraliza las conexion
 
 \begin{lstlisting}[frame=single, basicstyle=\footnotesize\ttfamily, numbers=none]
              CLIENTE 1                    CLIENTE 2
-      Tkinter + Socket TCP         Tkinter + Socket TCP
+    CustomTkinter + Socket TCP   CustomTkinter + Socket TCP
                |                          |
                +---------> TCP JSON <-----+
                               |
@@ -147,7 +147,7 @@ RF08 & Los participantes pueden transmitir audio desde su micr\'ofono. \\
 RNF01 & La comunicaci\'on se realiza mediante sockets TCP con mensajes JSON. \\
 RNF02 & Las contrase\~nas se almacenan con hash SHA-256, nunca en texto plano. \\
 RNF03 & El servidor soporta m\'ultiples clientes simult\'aneos mediante hilos. \\
-RNF04 & La interfaz gr\'affica utiliza Tkinter con actualizaciones as\'incronas. \\
+RNF04 & La interfaz gr\'afica utiliza CustomTkinter con actualizaciones as\'incronas. \\
 RNF05 & El sistema es multiplataforma (Windows y Linux). \\
 RNF06 & La base de datos SQLite es autocontenida y no requiere configuraci\'on externa. \\
 \bottomrule
@@ -192,7 +192,9 @@ La base de datos SQLite contiene las siguientes tablas:
     \caption{Diagrama Entidad-Relaci\'on de la base de datos}
 \end{figure}
 
-\section{Diagrama de Casos de Uso}
+\section{Documentaci\'on de Casos de Uso}
+
+\subsection{Diagrama de Casos de Uso}
 
 \IfFileExists{imagenes/casos_de_uso.png}{%
 \begin{figure}[H]
@@ -201,8 +203,6 @@ La base de datos SQLite contiene las siguientes tablas:
     \caption{Diagrama de casos de uso del sistema}
 \end{figure}
 }{}
-
-\section{Especificaci\'on de Casos de Uso}
 
 \subsection{Inventario de Casos de Uso}
 A continuaci\'on se presenta la lista general y descripci\'on breve de los casos de uso que componen el prototipo:
@@ -433,7 +433,7 @@ ProyectoZoom/
 |   +-- __init__.py
 |
 +-- Cliente/
-|   +-- main.py               # Punto de entrada, ventana principal Tkinter
+|   +-- main.py               # Punto de entrada, ventana principal CustomTkinter
 |   +-- cliente_socket.py     # Socket TCP con hilo listener y callbacks
 |   +-- config.json           # Configuracion de servidor
 |   |
@@ -494,7 +494,7 @@ A continuaci\'on se presentan las clases m\'as importantes del sistema, su respo
 \hline
 \texttt{AuthService} & Valida credenciales de usuario contra la base de datos & \texttt{validar\_login()} \\
 \hline
-\texttt{MainApp} & Ventana ra\'iz de Tkinter, administra transiciones entre pantallas & \texttt{\_mostrar\_login()}, \texttt{\_mostrar\_principal()}, \texttt{\_mostrar\_sala()} \\
+\texttt{MainApp} & Ventana ra\'iz de CustomTkinter, administra transiciones entre pantallas & \texttt{\_mostrar\_login()}, \texttt{\_mostrar\_principal()}, \texttt{\_mostrar\_sala()} \\
 \hline
 \texttt{GestorVideo} & Captura y transmite video desde la c\'amara web & \texttt{toggle\_camara()}, \texttt{\_capturar\_y\_enviar()}, \texttt{on\_camera\_frame()} \\
 \hline
@@ -572,12 +572,12 @@ while self._activo:
 \end{lstlisting}
 
 \subsubsection{Lado del Cliente}
-El cliente proporciona la interfaz gr\'afica en Tkinter y procesa la interacci\'on con el usuario y la red:
+El cliente proporciona la interfaz gr\'afica en CustomTkinter y procesa la interacci\'on con el usuario y la red:
 \begin{itemize}
-    \item \textbf{MainApp} (\texttt{Cliente/main.py}): Ventana ra\'iz de Tkinter que administra la transici\'on fluida entre las diferentes vistas de la aplicaci\'on.
+    \item \textbf{MainApp} (\texttt{Cliente/main.py}): Ventana ra\'iz de CustomTkinter que administra la transici\'on fluida entre las diferentes vistas de la aplicaci\'on.
     \item \textbf{ClienteSocket} (\texttt{Cliente/cliente\_socket.py}): Abstrae el socket del cliente, manteniendo un hilo de escucha para procesar mensajes entrantes en tiempo real.
     \item \textbf{Modelos} (\texttt{Cliente/modelos/usuario.py, mensaje.py}): Objetos que modelan a un usuario conectado y los mensajes del chat, facilitando su transporte y manipulaci\'on.
-    \item \textbf{Pantallas} (\texttt{LoginFrame, PantallaPrincipal, PantallaSala, PanelVideo}): Subclases de Tkinter especializadas en dibujar los formularios de login, el men\'u de salas, la sala de reuniones y las pantallas de video respectivamente.
+    \item \textbf{Pantallas} (\texttt{LoginFrame, PantallaPrincipal, PantallaSala, PanelVideo}): Subclases de CustomTkinter especializadas en dibujar los formularios de login, el men\'u de salas, la sala de reuniones y las pantallas de video respectivamente.
 \end{itemize}
 
 \subsubsection{Gestores de Red y Hardware}
@@ -612,12 +612,12 @@ class Usuario:
 \end{lstlisting}
 
 \subsubsection{Herencia}
-Se implementa principalmente en la interfaz gr\'afica para reutilizar los componentes visuales de Tkinter. Clases como \texttt{MainApp} heredan de \texttt{tk.Tk}, y las pantallas (\texttt{LoginFrame}, \texttt{PantallaPrincipal}, \texttt{PantallaSala}, \texttt{PanelVideo}) heredan de \texttt{tk.Frame}, permitiendo extender y personalizar el comportamiento de contenedores gr\'aficos est\'andar:
+Se implementa principalmente en la interfaz gr\'afica para reutilizar los componentes visuales de CustomTkinter. Clases como \texttt{MainApp} heredan de \texttt{ctk.CTk}, y las pantallas (\texttt{LoginFrame}, \texttt{PantallaPrincipal}, \texttt{PantallaSala}, \texttt{PanelVideo}) heredan de \texttt{ctk.CTkFrame}, permitiendo extender y personalizar el comportamiento de contenedores gr\'aficos est\'andar:
 
 \begin{lstlisting}
-class PanelVideo(tk.Frame):  # Hereda de tk.Frame
-    def __init__(self, master, usuario_nombre="", width=240, height=180, bg="#222"):
-        super().__init__(master, bg=bg, width=width, height=height)
+class PanelVideo(ctk.CTkFrame):  # Hereda de ctk.CTkFrame
+    def __init__(self, master, usuario_nombre="", width=240, height=180, bg="#111111"):
+        super().__init__(master, width=width, height=height, fg_color=bg, corner_radius=8, border_width=1, border_color="#2d2d2d")
         self.pack_propagate(False)
         # Widgets especificos para dibujar el video
 \end{lstlisting}
@@ -869,7 +869,7 @@ El sistema presenta las siguientes limitaciones identificadas, que representan o
     \item \textbf{Seguridad:} No hay cifrado de extremo a extremo ni protecci\'on contra ataques de intermediario (MITM) en la capa de transporte.
     \item \textbf{Historial de chat:} Los mensajes de chat se almacenan en la base de datos pero no se recuperan al ingresar a una sala (no hay persistencia de historial visible para el usuario).
     \item \textbf{Concurrencia de Base de Datos:} Al usar SQLite, el sistema cuenta con bloqueos de escritura a nivel de base de datos, lo cual limita la escalabilidad en un entorno concurrente masivo.
-    \item \textbf{Rendimiento de Interfaz (Tkinter):} El motor de renderizado de la UI de Tkinter no est\'a dise\~nado para procesar y redibujar flujos de video de alta definici\'on o alto frame rate de manera eficiente en la CPU.
+    \item \textbf{Rendimiento de Interfaz (CustomTkinter):} El motor de renderizado de la UI de CustomTkinter no est\'a dise\~nado para procesar y redibujar flujos de video de alta definici\'on o alto frame rate de manera eficiente en la CPU.
 \end{itemize}
 
 
@@ -927,16 +927,17 @@ pip install -r requirements.txt
 \end{lstlisting}
 Esto instalar\'a:
 \begin{itemize}
-    \item \textbf{Pillow:} Para el procesamiento y renderizado de frames de imagen en Tkinter.
+    \item \textbf{Pillow:} Para el procesamiento y renderizado de frames de imagen en CustomTkinter.
     \item \textbf{sounddevice:} Para la captura y reproducci\'on de audio en tiempo real.
     \item \textbf{opencv-python:} Para la captura y compresi\'on de frames de video desde la c\'amara.
+    \item \textbf{customtkinter:} Para la interfaz gr\'afica moderna de usuario.
 \end{itemize}
 
 \subsubsection{2. Dependencias del Sistema}
-Adicionalmente, se requieren dependencias a nivel de sistema operativo para el soporte de audio y video:
+Adicionalmente, se requieren dependencias a nivel de sistema operativo para el soporte de la interfaz, el audio y el video:
 \begin{itemize}
     \item \textbf{En Linux (Debian/Ubuntu):}
-    Ejecute el siguiente comando para instalar el soporte de Tkinter, PortAudio (requerido por \textit{sounddevice}) y FFmpeg (como alternativa de video):
+    Ejecute el siguiente comando para instalar el soporte base de Tkinter (requerido internamente por CustomTkinter), PortAudio (requerido por \textit{sounddevice}) y FFmpeg (como alternativa de video):
     \begin{lstlisting}
 sudo apt update
 sudo apt install python3-tk libportaudio2 ffmpeg -y

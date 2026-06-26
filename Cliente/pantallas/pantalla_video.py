@@ -5,23 +5,41 @@ import io
 from PIL import Image
 
 class PanelVideo(ctk.CTkFrame):
-    def __init__(self, master, usuario_nombre="", width=240, height=180, bg="#222"):
-        super().__init__(master, width=width, height=height, fg_color=bg)
+    def __init__(self, master, usuario_nombre="", width=240, height=180, bg="#111111"):
+        super().__init__(
+            master, 
+            width=width, 
+            height=height, 
+            fg_color=bg, 
+            corner_radius=8, 
+            border_width=1, 
+            border_color="#2d2d2d"
+        )
         self.pack_propagate(False)
         self._usuario_nombre = usuario_nombre
         self._width = width
         self._height = height
 
-        self._label_nombre = ctk.CTkLabel(
-            self, text=usuario_nombre, text_color="white",
-            fg_color="#333", font=("Arial", 8, "bold")
-        )
-        self._label_nombre.pack(fill=tk.X)
-
+        # Etiqueta de video que ocupa toda la superficie
         self._label_video = ctk.CTkLabel(
-            self, text="Sin video", text_color="#666", font=("Arial", 9)
+            self, 
+            text="📷  Sin video", 
+            text_color="#555555", 
+            font=("Helvetica Neue", 11, "bold")
         )
-        self._label_video.pack(fill=tk.BOTH, expand=True)
+        self._label_video.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+        # Nombre superpuesto en la esquina inferior izquierda
+        self._label_nombre = ctk.CTkLabel(
+            self, 
+            text=f"  {usuario_nombre}  ", 
+            text_color="white",
+            fg_color="#1c1c1e", 
+            corner_radius=4,
+            font=("Helvetica Neue", 9, "bold")
+        )
+        self._label_nombre.place(relx=0.04, rely=0.96, anchor="sw")
+        self._label_nombre.lift()
 
         self._imagen_ctk = None
 

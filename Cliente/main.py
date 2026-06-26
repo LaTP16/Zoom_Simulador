@@ -19,7 +19,7 @@ class MainApp(ctk.CTk):
         self._host = host
         self._puerto = puerto
         self.title("Prototipo Zoom - PC3 POO")
-        self.geometry("400x350")
+        self.geometry("540x480")
 
         self._cliente_socket = None
         self._usuario = None
@@ -55,7 +55,7 @@ class MainApp(ctk.CTk):
         self._frame_actual.pack(fill=tk.BOTH, expand=True)
 
     def _salir_sala(self):
-        self.geometry("400x350")
+        self.geometry("540x480")
         self._mostrar_principal()
 
     def _cerrar_sesion(self):

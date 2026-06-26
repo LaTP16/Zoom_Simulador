@@ -6,29 +6,86 @@ from Cliente.modelos.usuario import Usuario
 
 class LoginFrame(ctk.CTkFrame):
     def __init__(self, master, on_login_exitoso, host="127.0.0.1", puerto=5000):
-        super().__init__(master)
+        super().__init__(master, fg_color="#1a1a1a")
         self._on_login_exitoso = on_login_exitoso
         self._cliente_socket = ClienteSocket(host, puerto)
         self._crear_widgets()
 
     def _crear_widgets(self):
-        ctk.CTkLabel(self, text="Correo electrónico:", font=("Arial", 11, "bold")).pack(pady=(30, 5))
-        self._entrada_correo = ctk.CTkEntry(self, width=250, font=("Arial", 11))
-        self._entrada_correo.pack()
+        # Tarjeta contenedora centrada (sin altura fija para auto-ajuste dinámico)
+        card = ctk.CTkFrame(
+            self, 
+            width=400,
+            fg_color="#242424", 
+            corner_radius=16, 
+            border_width=1, 
+            border_color="#333333"
+        )
+        card.pack(expand=True, padx=40, pady=40)
 
-        ctk.CTkLabel(self, text="Contraseña:", font=("Arial", 11, "bold")).pack(pady=(15, 5))
-        self._entrada_clave = ctk.CTkEntry(self, width=250, show="*", font=("Arial", 11))
-        self._entrada_clave.pack()
+        # Título
+        ctk.CTkLabel(
+            card, 
+            text="Zoom Simulador", 
+            font=("Helvetica Neue", 24, "bold"), 
+            text_color="#ffffff"
+        ).pack(pady=(35, 20))
+
+        # Campo correo
+        self._entrada_correo = ctk.CTkEntry(
+            card, 
+            width=300, 
+            height=40,
+            placeholder_text="Correo electrónico",
+            font=("Helvetica Neue", 13),
+            corner_radius=8,
+            fg_color="#1a1a1a",
+            border_color="#444444",
+            text_color="#ffffff",
+            placeholder_text_color="#888888"
+        )
+        self._entrada_correo.pack(pady=8, padx=40)
+
+        # Campo contraseña
+        self._entrada_clave = ctk.CTkEntry(
+            card, 
+            width=300, 
+            height=40,
+            show="*", 
+            placeholder_text="Contraseña",
+            font=("Helvetica Neue", 13),
+            corner_radius=8,
+            fg_color="#1a1a1a",
+            border_color="#444444",
+            text_color="#ffffff",
+            placeholder_text_color="#888888"
+        )
+        self._entrada_clave.pack(pady=8, padx=40)
         self._entrada_clave.bind("<Return>", lambda e: self._procesar_login())
 
+        # Botón de ingresar
         self._btn_ingresar = ctk.CTkButton(
-            self, text="Ingresar", command=self._procesar_login,
-            width=150, font=("Arial", 11, "bold"), fg_color="#4CAF50", text_color="white"
+            card, 
+            text="Iniciar Sesión", 
+            command=self._procesar_login,
+            width=300, 
+            height=40,
+            font=("Helvetica Neue", 13, "bold"), 
+            fg_color="#0E71EB", 
+            hover_color="#0b5ed7",
+            text_color="white",
+            corner_radius=8
         )
-        self._btn_ingresar.pack(pady=25)
+        self._btn_ingresar.pack(pady=(20, 10), padx=40)
 
-        self._mensaje_error = ctk.CTkLabel(self, text="", text_color="#f44336", font=("Arial", 10))
-        self._mensaje_error.pack()
+        # Mensaje de error (garantiza espacio al fondo de la tarjeta)
+        self._mensaje_error = ctk.CTkLabel(
+            card, 
+            text="", 
+            text_color="#f44336", 
+            font=("Helvetica Neue", 10)
+        )
+        self._mensaje_error.pack(pady=(0, 25))
 
     def _procesar_login(self):
         correo = self._entrada_correo.get().strip()
