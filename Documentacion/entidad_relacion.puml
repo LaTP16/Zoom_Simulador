@@ -1,43 +1,72 @@
 @startuml
-skinparam entity {
-  BackgroundColor White
-  BorderColor #2E86C1
-  FontColor #2E86C1
+!theme plain
+skinparam linetype ortho
+
+entity "Usuarios" as usuario {
+  * idUsuario : INTEGER <<PK>>
+  --
+  * nombres : TEXT
+  * correo : TEXT
+  * clave : TEXT
+  * rol : TEXT
 }
 
-entity Usuario {
-  * IdUsuario
+entity "Salas" as sala {
+  * idSala : INTEGER <<PK>>
+  --
+  * nombre : TEXT
+  * codigo : TEXT
+  * idHost : INTEGER <<FK>>
+  * estado : TEXT
+  * fecha_creacion : DATETIME
 }
 
-entity Sala {
-  * IdSala
-  * IdHost
+entity "Participantes" as participante {
+  * idParticipante : INTEGER <<PK>>
+  --
+  * idSala : INTEGER <<FK>>
+  * idUsuario : INTEGER <<FK>>
+  * estado : TEXT
+  * fecha_union : DATETIME
 }
 
-entity Participante {
-  * IdParticipante
+entity "Solicitudes" as solicitud {
+  * idSolicitud : INTEGER <<PK>>
+  --
+  * idSala : INTEGER <<FK>>
+  * idUsuario : INTEGER <<FK>>
+  * estado : TEXT
+  * fecha_solicitud : DATETIME
 }
 
-entity Solicitud {
-  * IdSolicitud
+entity "Mensajes" as mensaje {
+  * idMensaje : INTEGER <<PK>>
+  --
+  * idSala : INTEGER <<FK>>
+  * idUsuario : INTEGER <<FK>>
+  * contenido : TEXT
+  * fecha_envio : DATETIME
 }
 
-entity Mensaje {
-  * IdMensaje
+entity "Archivos" as archivo {
+  * idArchivo : INTEGER <<PK>>
+  --
+  * idSala : INTEGER <<FK>>
+  * idUsuario : INTEGER <<FK>>
+  * nombre : TEXT
+  * ruta_local : TEXT
+  * peso : INTEGER
+  * fecha_envio : DATETIME
 }
 
-entity Archivo {
-  * IdArchivo
-}
+usuario ||--o{ sala : "crea (Host)"
+usuario ||--o{ participante : "se une como"
+usuario ||--o{ solicitud : "realiza"
+usuario ||--o{ mensaje : "envía"
+usuario ||--o{ archivo : "sube"
 
-Usuario ||--o{ Sala : "crea"
-Usuario ||--o{ Participante : ""
-Usuario ||--o{ Solicitud : ""
-Usuario ||--o{ Mensaje : ""
-Usuario ||--o{ Archivo : ""
-
-Sala ||--o{ Participante : ""
-Sala ||--o{ Solicitud : ""
-Sala ||--o{ Mensaje : ""
-Sala ||--o{ Archivo : ""
+sala ||--o{ participante : "contiene"
+sala ||--o{ solicitud : "recibe"
+sala ||--o{ mensaje : "aloja"
+sala ||--o{ archivo : "contiene"
 @enduml

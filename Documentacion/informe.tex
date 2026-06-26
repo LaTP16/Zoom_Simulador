@@ -100,20 +100,13 @@ El sistema emplea una arquitectura \textbf{cliente-servidor} basada en \textbf{s
 
 El sistema sigue un modelo cliente-servidor. El servidor centraliza las conexiones y act\'ua como intermediario. Cada cliente se conecta mediante TCP y el servidor asigna un hilo independiente por conexi\'on.
 
-\begin{lstlisting}[frame=single, basicstyle=\footnotesize\ttfamily, numbers=none]
-             CLIENTE 1                    CLIENTE 2
-    CustomTkinter + Socket TCP   CustomTkinter + Socket TCP
-               |                          |
-               +---------> TCP JSON <-----+
-                              |
-                          SERVIDOR
-                    +--------------------+
-                    |  BaseDatos SQLite   |
-                    |  AuthService        |
-                    |  ManejadorCliente   |
-                    |  Reenvio de Sala    |
-                    +--------------------+
-\end{lstlisting}
+\IfFileExists{imagenes/arquitectura.png}{%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{imagenes/arquitectura.png}
+    \caption{Diagrama de arquitectura del sistema}
+\end{figure}
+}{}
 
 \subsection{Requisitos Funcionales}
 
@@ -155,13 +148,7 @@ RNF06 & La base de datos SQLite es autocontenida y no requiere configuraci\'on e
 \caption{Requisitos no funcionales del sistema}
 \end{table}
 
-\IfFileExists{imagenes/arquitectura.png}{%
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\textwidth]{imagenes/arquitectura.png}
-    \caption{Diagrama de arquitectura del sistema}
-\end{figure}
-}{}
+
 
 \section{Base de Datos}
 
@@ -402,15 +389,12 @@ FechaSolicitud & TEXT & Fecha y hora de la solicitud en formato ISO 8601. \\
 \end{figure}
 
 \clearpage
-\begin{landscape}
-\thispagestyle{empty}
 \section{Diagrama de Clases}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\linewidth, height=0.65\textheight, keepaspectratio]{imagenes/clases.png}
+    \includegraphics[width=0.9\textwidth]{imagenes/clases.png}
     \caption{Diagrama de clases del sistema}
 \end{figure}
-\end{landscape}
 \clearpage
 
 \section{Descripci\'on del C\'odigo}
@@ -510,39 +494,13 @@ A continuaci\'on se presentan las clases m\'as importantes del sistema, su respo
 
 El siguiente diagrama describe la secuencia general del programa desde su inicio hasta la interacci\'on en una sala:
 
-\begin{lstlisting}[frame=single, basicstyle=\footnotesize\ttfamily, numbers=none]
-Inicio
-  |
-  v
-Servidor abre socket TCP en puerto 5000
-  |
-  v
-Cliente se conecta al servidor
-  |
-  v
-Usuario ingresa credenciales (correo + clave)
-  |
-  v
-Servidor valida credenciales contra base de datos
-  |
-  +-- Exito: Cliente entra al menu principal
-  |        |
-  |        +-- Usuario crea una sala (genera codigo, se asigna como host)
-  |        |        |
-  |        |        v
-  |        |    Pantalla de sala (host): chat, video, audio, archivos,
-  |        |    sala de espera, admitir/rechazar usuarios
-  |        |
-  |        +-- Usuario se une a una sala (ingresa codigo)
-  |                 |
-  |                 +-- Es el host? -> Entra directo
-  |                 +-- No es host? -> Sala de espera, host decide
-  |                          |
-  |                   Admitido -> Entra a la sala
-  |                   Rechazado -> Vuelve al menu
-  |
-  +-- Falla: Mensaje de error, reintentar
-\end{lstlisting}
+\IfFileExists{imagenes/flujo_ejecucion.png}{%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{imagenes/flujo_ejecucion.png}
+    \caption{Flujo de ejecuci\'on general del sistema}
+\end{figure}
+}{}
 
 \subsection{Funcionamiento de las Clases y Componentes}
 

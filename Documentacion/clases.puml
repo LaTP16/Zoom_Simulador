@@ -1,76 +1,56 @@
 @startuml
-skinparam class {
-  BackgroundColor White
-  BorderColor #2E86C1
-  FontColor #2E86C1
+!theme plain
+skinparam linetype ortho
+
+package "Cliente" {
+  class MainApp {
+    + main()
+    - _mostrar_login()
+    - _mostrar_principal()
+    - _mostrar_sala()
+  }
+  class ClienteSocket {
+    + conectar()
+    + enviar()
+    + registrar_callback()
+  }
+  class Pantallas {
+    + LoginFrame
+    + PantallaPrincipal
+    + PantallaSala
+    + PanelVideo
+  }
+  class Gestores {
+    + GestorVideo
+    + GestorAudio
+    + GestorArchivos
+  }
 }
 
-class ClienteSocket {
-  + conectar()
-  + enviar(mensaje)
-  + enviar_y_recibir(datos)
-  + registrar_callback(tipo, cb)
+package "Servidor" {
+  class Servidor {
+    + iniciar()
+    + reenviar_a_sala()
+  }
+  class ManejadorCliente {
+    - socket_cliente
+    + procesar_mensajes()
+  }
+  class BaseDatos {
+    + conectar()
+    + obtener_conexion()
+  }
+  class AuthService {
+    + validar_login()
+  }
 }
 
-class Usuario {
-  - id_usuario
-  - nombres
-  - correo
-  - rol
-  + es_host()
-}
+MainApp --> Pantallas : navega
+Pantallas --> ClienteSocket : usa
+Pantallas --> Gestores : coordina
+Gestores --> ClienteSocket : transmite
 
-class PantallaPrincipal {
-  - _crear_sala()
-  - _unirse_sala()
-}
-
-class PantallaSala {
-  - _enviar_mensaje()
-  - _toggle_camara()
-  - _toggle_mic()
-}
-
-class Servidor {
-  - _clientes[]
-  - _salas{}
-  + reenviar_a_sala()
-}
-
-class ManejadorCliente {
-  - _usuario_actual
-  - _sala_actual
-  - _procesar_mensaje()
-}
-
-class Protocolo {
-  + LOGIN_REQUEST
-  + CREATE_ROOM
-  + CHAT_MESSAGE
-  + CAMERA_FRAME
-  + AUDIO_FRAME
-  + ROOM_PARTICIPANTS
-}
-
-class BaseDatos {
-  + inicializar()
-  + conectar()
-}
-
-class AuthService {
-  + validar_login()
-}
-
-ClienteSocket --> Protocolo : usa
-Servidor --> Protocolo : usa
-
-PantallaPrincipal --> ClienteSocket : usa
-PantallaSala --> ClienteSocket : usa
-PantallaPrincipal --> Usuario : usa
-PantallaSala --> Usuario : usa
-
-Servidor --> ManejadorCliente : contiene
-Servidor --> BaseDatos : usa
-ManejadorCliente --> AuthService : usa
-ManejadorCliente --> Protocolo : usa
+Servidor *-- ManejadorCliente : administra
+ManejadorCliente --> BaseDatos : consulta
+ManejadorCliente --> AuthService : autentica
 @enduml

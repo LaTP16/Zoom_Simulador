@@ -1,43 +1,54 @@
 @startuml
-actor "Cliente 1 (Host)" as C1
-actor "Cliente 2 (Usuario)" as C2
-participant Servidor
-database "Base de Datos" as BD
+!theme plain
+autonumber
 
-C1 -> Servidor: LOGIN_REQUEST
-Servidor -> BD: Validar credenciales
-BD --> Servidor: Usuario valido
-Servidor --> C1: LOGIN_RESPONSE (success)
+actor "Host (Anfitrión)" as H
+actor "Guest (Invitado)" as G
+participant "ClienteSocket" as CS
+participant "Servidor" as S
+database "Base de Datos" as DB
 
-C2 -> Servidor: LOGIN_REQUEST
-Servidor -> BD: Validar credenciales
-BD --> Servidor: Usuario valido
-Servidor --> C2: LOGIN_RESPONSE (success)
+== 1. Autenticación ==
+H -> CS: Iniciar Sesión (correo, clave)
+CS -> S: LOGIN_REQUEST
+S -> DB: Validar Credenciales (SHA-256)
+DB --> S: Credenciales válidas
+S --> CS: LOGIN_RESPONSE (Success)
+CS --> H: Mostrar Menú Principal
 
-C1 -> Servidor: CREATE_ROOM (codigo, nombre)
-Servidor -> BD: Insertar sala
-BD --> Servidor: OK
-Servidor --> C1: Sala creada (idSala, codigo)
+== 2. Creación y Unión a Sala ==
+H -> CS: Crear Sala
+CS -> S: CREATE_ROOM (codigo)
+S -> DB: Registrar Sala (estado='Activa')
+S --> CS: CREATE_ROOM (Success)
+CS --> H: Abrir PantallaSala (Esperando...)
 
-C2 -> Servidor: JOIN_ROOM_REQUEST (codigo)
-Servidor -> C1: WAITING_ROOM_UPDATE (solicitante)
-C1 -> Servidor: ADMIT_USER (idUsuario)
-Servidor -> BD: Registrar participante
-BD --> Servidor: OK
-Servidor --> C2: Usuario admitido
+G -> CS: Unirse a Sala (codigo)
+CS -> S: JOIN_ROOM_REQUEST
+S -> CS: WAITING_ROOM_UPDATE (para Host)
+H -> CS: Admitir Participante
+CS -> S: ADMIT_USER
+S -> DB: Registrar Participante
+S --> CS: ADMIT_USER (para Guest)
+CS --> G: Abrir PantallaSala (Admitido)
 
-C1 -> Servidor: CHAT_MESSAGE (texto)
-Servidor --> C2: CHAT_MESSAGE (reenvio)
+== 3. Transmisión Multimedia y Chat ==
+H -> CS: Enviar Mensaje Chat
+CS -> S: CHAT_MESSAGE
+S --> CS: CHAT_MESSAGE (Reenvío a Guest)
+CS --> G: Mostrar Mensaje
 
-C1 -> Servidor: VIDEO_START
-Servidor --> C2: VIDEO_START
-loop Transmision de frames
-  C1 -> Servidor: CAMERA_FRAME (base64)
-  Servidor --> C2: CAMERA_FRAME (reenvio)
+H -> CS: Activar Cámara
+CS -> S: VIDEO_START
+loop Envío de Frames
+  CS -> S: CAMERA_FRAME (base64)
+  S --> CS: CAMERA_FRAME (Reenvío a Guest)
 end
-C1 -> Servidor: VIDEO_STOP
-Servidor --> C2: VIDEO_STOP
 
-C2 -> Servidor: LEAVE_ROOM
-Servidor --> C1: Usuario retirado
+== 4. Finalización de Reunión (CP-10) ==
+H -> CS: Finalizar Reunión
+CS -> S: LEAVE_ROOM
+S -> DB: Actualizar Sala (estado='Finalizada')
+S -> CS: ROOM_CLOSED (Difusión a Invitados)
+CS --> G: Expulsión forzada y Cierre de Sala
 @enduml

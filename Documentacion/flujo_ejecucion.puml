@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+start
+
+:Servidor abre socket TCP en puerto 5000;
+:Cliente se conecta al servidor;
+:Usuario ingresa credenciales (correo + clave);
+:Servidor valida credenciales contra base de datos;
+
+if (¿Validación exitosa?) then (Éxito)
+  :Cliente entra al menú principal;
+  if (¿Acción del usuario?) then (Crear Sala)
+    :Usuario crea una sala;
+    :Genera código y se asigna como host;
+    :Pantalla de sala (host):\nchat, video, audio, archivos,\nsala de espera, admitir/rechazar usuarios;
+  else (Unirse a Sala)
+    :Usuario ingresa código;
+    if (¿Es el host?) then (Sí)
+      :Entra directo;
+    else (No)
+      :Espera en sala de espera;
+      if (¿Host decide?) then (Admitido)
+        :Entra a la sala;
+      else (Rechazado)
+        :Vuelve al menú principal;
+      endif
+    endif
+  endif
+else (Falla)
+  :Mostrar mensaje de error;
+  :Reintentar login;
+endif
+
+stop
+@enduml
