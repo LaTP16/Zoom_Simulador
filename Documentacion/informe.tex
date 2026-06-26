@@ -894,10 +894,36 @@ Los mensajes se env\'ian en JSON sobre TCP, delimitados por \verb|\n|.
 \section{Manual de Instalaci\'on y Ejecuci\'on}
 
 \subsection{Requisitos}
+El prototipo requiere la instalaci\'on de dependencias de Python y de librer\'{\i}as del sistema operativo para el correcto funcionamiento de la interfaz gr\'afica, la transmisi\'on de audio y la captura de video:
+
+\subsubsection{1. Librer\'{\i}as de Python}
+Instale las dependencias de Python ejecutando:
+\begin{lstlisting}
+pip install -r requirements.txt
+\end{lstlisting}
+Esto instalar\'a:
 \begin{itemize}
-    \item Python 3.10 o superior
-    \item Pillow (instalar con \texttt{pip install -r requirements.txt})
-    \item Opcional: OpenCV (\texttt{pip install opencv-python}) o ffmpeg
+    \item \textbf{Pillow:} Para el procesamiento y renderizado de frames de imagen en Tkinter.
+    \item \textbf{sounddevice:} Para la captura y reproducci\'on de audio en tiempo real.
+    \item \textbf{opencv-python:} Para la captura y compresi\'on de frames de video desde la c\'amara.
+\end{itemize}
+
+\subsubsection{2. Dependencias del Sistema}
+Adicionalmente, se requieren dependencias a nivel de sistema operativo para el soporte de audio y video:
+\begin{itemize}
+    \item \textbf{En Linux (Debian/Ubuntu):}
+    Ejecute el siguiente comando para instalar el soporte de Tkinter, PortAudio (requerido por \textit{sounddevice}) y FFmpeg (como alternativa de video):
+    \begin{lstlisting}
+sudo apt update
+sudo apt install python3-tk libportaudio2 ffmpeg -y
+    \end{lstlisting}
+    \item \textbf{En macOS:}
+    Instale las dependencias a trav\'es de Homebrew:
+    \begin{lstlisting}
+brew install portaudio ffmpeg
+    \end{lstlisting}
+    \item \textbf{En Windows:}
+    Las librer\'{\i}as de Python usualmente empaquetan las dependencias binarias (como PortAudio) autom\'aticamente en sus ruedas (\textit{wheels}), por lo que no requiere configuraci\'on adicional si utiliza la c\'amara con OpenCV.
 \end{itemize}
 
 \subsection{Ejecuci\'on}
@@ -938,6 +964,14 @@ python -m Cliente.main
     \item La POO permiti\'o organizar el c\'odigo en clases especializadas con responsabilidades claras.
     \item La concurrencia con hilos permite atender m\'ultiples clientes simult\'aneamente.
     \item La transmisi\'on de video se logr\'o mediante captura, compresi\'on JPEG y codificaci\'on base64.
+\end{itemize}
+
+\section{Anexos}
+
+\subsection{Repositorio del Proyecto}
+El c\'odigo fuente completo del prototipo, incluyendo los scripts de base de datos, la documentaci\'on y el c\'odigo del cliente y del servidor, se encuentra disponible p\'ublicamente en el siguiente repositorio de GitHub:
+\begin{itemize}
+    \item \url{https://github.com/LaTP16/Zoom_Simulador}
 \end{itemize}
 
 \end{document}

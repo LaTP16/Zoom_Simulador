@@ -190,13 +190,15 @@ class PantallaSala(tk.Frame):
         if self._es_host:
             self._cliente_socket.registrar_callback("WAITING_ROOM_UPDATE", self._nuevo_solicitante)
         self._cliente_socket.registrar_callback("KICKED", self._ser_expulsado)
+        self._cliente_socket.registrar_callback("ROOM_CLOSED", self._sala_cerrada)
+
 
     def _limpiar_callbacks(self):
         for tipo in ("CHAT_MESSAGE", "ROOM_PARTICIPANTS",
                      "VIDEO_START", "VIDEO_STOP", "CAMERA_FRAME",
                      "AUDIO_FRAME",
                      "FILE_START", "FILE_CHUNK", "FILE_END",
-                     "WAITING_ROOM_UPDATE", "KICKED"):
+                     "WAITING_ROOM_UPDATE", "KICKED", "ROOM_CLOSED"):
             self._cliente_socket.remover_callback(tipo)
 
     # ------------------------------------------------------------------
@@ -333,6 +335,17 @@ class PantallaSala(tk.Frame):
         messagebox.showinfo("Información", "Has sido expulsado de la sala por el anfitrión.")
         self._salir()
 
+    def _sala_cerrada(self, msg):
+        self.after(0, self._on_sala_cerrada_ui)
+
+    def _on_sala_cerrada_ui(self):
+        messagebox.showinfo("Información", "La sala ha sido finalizada por el anfitrión.")
+        if self._gestor_video.camara_activa:
+            self._gestor_video.detener_captura()
+        self._gestor_audio.detener()
+        self._limpiar_callbacks()
+        self._on_salir()
+
     # ------------------------------------------------------------------
     # Salir de la sala
     # ------------------------------------------------------------------
@@ -344,4 +357,5 @@ class PantallaSala(tk.Frame):
         self._cliente_socket.enviar({"type": "LEAVE_ROOM", "roomCode": self._codigo_sala})
         self._limpiar_callbacks()
         self._on_salir()
+
 

@@ -38,9 +38,8 @@ class ManejadorCliente:
                 break
         print(f"[DESCONEXIÓN] Cliente {self._direccion} se ha desconectado")
         if self._sala_actual:
-            codigo = self._sala_actual
-            self._sala_actual = None
-            self._servidor.broadcast_participantes(codigo)
+            self._manejar_salir_sala()
+
         self._conexion.close()
         self._servidor.remover_cliente(self)
 
@@ -67,10 +66,8 @@ class ManejadorCliente:
         elif tipo == Protocolo.GET_ROOM_PARTICIPANTS:
             self._servidor.broadcast_participantes(mensaje.get("roomCode"))
         elif tipo == Protocolo.LEAVE_ROOM:
-            codigo = self._sala_actual
-            self._sala_actual = None
-            if codigo:
-                self._servidor.broadcast_participantes(codigo)
+            self._manejar_salir_sala()
+
         elif tipo == Protocolo.KICK_USER:
             self._manejar_expulsar(mensaje)
 
@@ -244,6 +241,46 @@ class ManejadorCliente:
         except Exception as e:
             print(f"[ERROR] Al expulsar usuario: {e}")
 
+    def _manejar_salir_sala(self, mensaje=None):
+        codigo = self._sala_actual
+        if not codigo:
+            return
+        self._sala_actual = None
+
+        try:
+            bd = BaseDatos()
+            conexion = bd.conectar()
+            cursor = conexion.cursor()
+            cursor.execute(
+                "SELECT IdSala, IdHost FROM Salas WHERE CodigoSala = ? AND Estado = 'Activa'",
+                (codigo,)
+            )
+            sala = cursor.fetchone()
+            if sala:
+                # Si el que sale es el host, cerramos la sala
+                if self._usuario_actual and sala["IdHost"] == self._usuario_actual["idUsuario"]:
+                    cursor.execute(
+                        "UPDATE Salas SET Estado = 'Finalizada' WHERE CodigoSala = ?",
+                        (codigo,)
+                    )
+                    conexion.commit()
+
+                    # Notificar a todos los demás de que la sala se cerró y removerlos
+                    clientes_a_notificar = []
+                    with self._servidor._lock:
+                        for cliente in self._servidor._clientes:
+                            if cliente._sala_actual == codigo and cliente != self:
+                                cliente._sala_actual = None
+                                clientes_a_notificar.append(cliente)
+
+                    for cliente in clientes_a_notificar:
+                        cliente._enviar({"type": Protocolo.ROOM_CLOSED})
+                else:
+                    # Si es un usuario común, se actualiza el listado
+                    self._servidor.broadcast_participantes(codigo)
+        except Exception as e:
+            print(f"[ERROR] Al salir de la sala: {e}")
+
     def _enviar(self, datos):
         try:
             if "__rid" in datos:
@@ -254,4 +291,5 @@ class ManejadorCliente:
         except Exception as e:
             print(f"[ERROR] No se pudo enviar mensaje: {e}")
             self._conectado = False
+
 
