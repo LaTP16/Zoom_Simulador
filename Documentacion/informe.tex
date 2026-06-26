@@ -100,6 +100,61 @@ El sistema emplea una arquitectura \textbf{cliente-servidor} basada en \textbf{s
 
 El sistema sigue un modelo cliente-servidor. El servidor centraliza las conexiones y act\'ua como intermediario. Cada cliente se conecta mediante TCP y el servidor asigna un hilo independiente por conexi\'on.
 
+\begin{lstlisting}[frame=single, basicstyle=\footnotesize\ttfamily, numbers=none]
+             CLIENTE 1                    CLIENTE 2
+      Tkinter + Socket TCP         Tkinter + Socket TCP
+               |                          |
+               +---------> TCP JSON <-----+
+                              |
+                          SERVIDOR
+                    +--------------------+
+                    |  BaseDatos SQLite   |
+                    |  AuthService        |
+                    |  ManejadorCliente   |
+                    |  Reenvio de Sala    |
+                    +--------------------+
+\end{lstlisting}
+
+\subsection{Requisitos Funcionales}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{p{2cm}p{10cm}}
+\toprule
+\textbf{C\'odigo} & \textbf{Descripci\'on} \\
+\midrule
+RF01 & El usuario puede iniciar sesi\'on con correo y contrase\~na. \\
+RF02 & El usuario autenticado puede crear una sala de reuni\'on. \\
+RF03 & El usuario autenticado puede unirse a una sala mediante un c\'odigo. \\
+RF04 & El host puede admitir o rechazar solicitudes de ingreso a la sala. \\
+RF05 & Los participantes pueden enviar y recibir mensajes de chat en tiempo real. \\
+RF06 & Los participantes pueden compartir archivos dentro de la sala. \\
+RF07 & Los participantes pueden transmitir video desde su c\'amara web. \\
+RF08 & Los participantes pueden transmitir audio desde su micr\'ofono. \\
+\bottomrule
+\end{tabular}
+\caption{Requisitos funcionales del sistema}
+\end{table}
+
+\subsection{Requisitos No Funcionales}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{p{2cm}p{10cm}}
+\toprule
+\textbf{C\'odigo} & \textbf{Descripci\'on} \\
+\midrule
+RNF01 & La comunicaci\'on se realiza mediante sockets TCP con mensajes JSON. \\
+RNF02 & Las contrase\~nas se almacenan con hash SHA-256, nunca en texto plano. \\
+RNF03 & El servidor soporta m\'ultiples clientes simult\'aneos mediante hilos. \\
+RNF04 & La interfaz gr\'affica utiliza Tkinter con actualizaciones as\'incronas. \\
+RNF05 & El sistema es multiplataforma (Windows y Linux). \\
+RNF06 & La base de datos SQLite es autocontenida y no requiere configuraci\'on externa. \\
+\bottomrule
+\end{tabular}
+\caption{Requisitos no funcionales del sistema}
+\end{table}
+
 \IfFileExists{imagenes/arquitectura.png}{%
 \begin{figure}[htbp]
     \centering
@@ -336,7 +391,134 @@ FechaSolicitud & TEXT & Fecha y hora de la solicitud en formato ISO 8601. \\
 
 \section{Descripci\'on del C\'odigo}
 
-Esta secci\'on explica c\'omo funciona cada componente del sistema, detallando el rol de las clases y de qu\'e forma se aplican los principios de la Programaci\'on Orientada a Objetos y los patrones de dise\~no para estructurar una aplicaci\'on modular, escalable y robusta.
+Esta secci\'on explica c\'omo se organiza el proyecto, sus clases principales, el flujo de ejecuci\'on, la aplicaci\'on de la POO, los patrones de dise\~no, el manejo de errores y las pruebas realizadas.
+
+\subsection{Estructura del Proyecto}
+
+El proyecto sigue una arquitectura cliente-servidor con separaci\'on clara de responsabilidades en m\'odulos independientes. La estructura de directorios es la siguiente:
+
+\begin{lstlisting}[frame=single, basicstyle=\footnotesize\ttfamily, numbers=none]
+ProyectoZoom/
+|
++-- Servidor/
+|   +-- servidor.py           # Punto de entrada del servidor TCP
+|   +-- manejador_cliente.py  # Manejador por conexion de cliente
+|   +-- protocolo.py          # Constantes del protocolo de mensajes
+|   +-- base_datos.py         # Singleton de conexion SQLite
+|   +-- auth_service.py       # Validacion de credenciales
+|   +-- __init__.py
+|
++-- Cliente/
+|   +-- main.py               # Punto de entrada, ventana principal Tkinter
+|   +-- cliente_socket.py     # Socket TCP con hilo listener y callbacks
+|   +-- config.json           # Configuracion de servidor
+|   |
+|   +-- modelos/
+|   |   +-- usuario.py        # Modelo de datos del usuario
+|   |   +-- mensaje.py        # Modelo de datos del mensaje
+|   |
+|   +-- pantallas/
+|   |   +-- login.py          # Pantalla de inicio de sesion
+|   |   +-- pantalla_principal.py  # Menu principal (crear/unirse a sala)
+|   |   +-- pantalla_sala.py  # Pantalla de sala de reunion
+|   |   +-- pantalla_video.py # Panel de video individual
+|   |
+|   +-- gestores/
+|       +-- gestor_video.py   # Captura y transmision de video
+|       +-- gestor_audio.py   # Captura y reproduccion de audio
+|       +-- gestor_archivos.py # Transferencia de archivos
+|
++-- BaseDatos/
+|   +-- crear_tablas.sql      # Esquema de la base de datos
+|   +-- datos_prueba.sql      # Datos de prueba iniciales
+|
++-- Documentacion/            # Diagramas e informe LaTeX
++-- server.db                 # Base de datos SQLite (generada en ejecucion)
++-- requirements.txt          # Dependencias del proyecto
+\end{lstlisting}
+
+Esta separaci\'on por m\'odulos permite reducir el acoplamiento, facilitando el mantenimiento y futuras ampliaciones del sistema.
+
+\subsection{Arquitectura de M\'odulos}
+
+El sistema se organiza en tres capas principales:
+
+\begin{itemize}
+    \item \textbf{Servidor:} Gestiona conexiones entrantes, autenticaci\'on, registro de salas y retransmisi\'on de mensajes entre clientes de una misma sala.
+    \item \textbf{Cliente:} Proporciona la interfaz gr\'afica y coordina la interacci\'on del usuario con la red a trav\'es de pantallas y gestores especializados.
+    \item \textbf{Gestores:} Encapsulan la l\'ogica de captura de hardware (c\'amara, micr\'ofono) y transferencia de archivos, separando la complejidad t\'ecnica de la interfaz de usuario.
+\end{itemize}
+
+\subsection{Clases Principales}
+
+A continuaci\'on se presentan las clases m\'as importantes del sistema, su responsabilidad y sus m\'etodos principales:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3cm}p{5cm}p{7cm}}
+\toprule
+\textbf{Clase} & \textbf{Responsabilidad} & \textbf{M\'etodos principales} \\
+\midrule
+\texttt{Servidor} & Abre socket TCP, acepta conexiones y administra clientes & \texttt{iniciar()}, \texttt{detener()}, \texttt{reenviar\_a\_sala()} \\
+\hline
+\texttt{ManejadorCliente} & Atiende un cliente en un hilo separado, interpreta y procesa mensajes & \texttt{iniciar()}, \texttt{\_procesar\_mensaje()}, \texttt{\_enviar()} \\
+\hline
+\texttt{ClienteSocket} & Abstrae el socket TCP del cliente con callbacks as\'incronos & \texttt{conectar()}, \texttt{enviar()}, \texttt{enviar\_y\_recibir()}, \texttt{registrar\_callback()} \\
+\hline
+\texttt{BaseDatos} & Singleton que maneja la conexi\'on SQLite y las consultas & \texttt{conectar()}, \texttt{inicializar()}, \texttt{hash\_clave()} \\
+\hline
+\texttt{AuthService} & Valida credenciales de usuario contra la base de datos & \texttt{validar\_login()} \\
+\hline
+\texttt{MainApp} & Ventana ra\'iz de Tkinter, administra transiciones entre pantallas & \texttt{\_mostrar\_login()}, \texttt{\_mostrar\_principal()}, \texttt{\_mostrar\_sala()} \\
+\hline
+\texttt{GestorVideo} & Captura y transmite video desde la c\'amara web & \texttt{toggle\_camara()}, \texttt{\_capturar\_y\_enviar()}, \texttt{on\_camera\_frame()} \\
+\hline
+\texttt{GestorAudio} & Captura audio del micr\'ofono y reproduce audio recibido & \texttt{toggle\_mic()}, \texttt{\_capturar\_y\_enviar\_audio()}, \texttt{on\_audio\_frame()} \\
+\hline
+\texttt{GestorArchivos}     & Transfiere archivos en fragmentos codificados en Base64 & \texttt{\_enviar\_archivo()}, \texttt{on\_file\_start()}, \texttt{on\_file\_end()} \\
+\bottomrule
+\end{tabular}
+\caption{Clases principales del sistema}
+\end{table}
+
+\subsection{Flujo de Ejecuci\'on}
+
+El siguiente diagrama describe la secuencia general del programa desde su inicio hasta la interacci\'on en una sala:
+
+\begin{lstlisting}[frame=single, basicstyle=\footnotesize\ttfamily, numbers=none]
+Inicio
+  |
+  v
+Servidor abre socket TCP en puerto 5000
+  |
+  v
+Cliente se conecta al servidor
+  |
+  v
+Usuario ingresa credenciales (correo + clave)
+  |
+  v
+Servidor valida credenciales contra base de datos
+  |
+  +-- Exito: Cliente entra al menu principal
+  |        |
+  |        +-- Usuario crea una sala (genera codigo, se asigna como host)
+  |        |        |
+  |        |        v
+  |        |    Pantalla de sala (host): chat, video, audio, archivos,
+  |        |    sala de espera, admitir/rechazar usuarios
+  |        |
+  |        +-- Usuario se une a una sala (ingresa codigo)
+  |                 |
+  |                 +-- Es el host? -> Entra directo
+  |                 +-- No es host? -> Sala de espera, host decide
+  |                          |
+  |                   Admitido -> Entra a la sala
+  |                   Rechazado -> Vuelve al menu
+  |
+  +-- Falla: Mensaje de error, reintentar
+\end{lstlisting}
 
 \subsection{Funcionamiento de las Clases y Componentes}
 
@@ -351,6 +533,19 @@ El servidor gestiona la persistencia de datos y la comunicaci\'on concurrente en
     \item \textbf{ManejadorCliente} (\texttt{Servidor/manejador\_cliente.py}): Representa el hilo asignado por el servidor para atender a un cliente. Recibe e interpreta los mensajes JSON delimitados por \verb|\n| y despacha las peticiones.
     \item \textbf{Servidor} (\texttt{Servidor/servidor.py}): Clase principal que abre el socket TCP de escucha, acepta nuevas conexiones de clientes y crea un hilo daemon con su respectivo \texttt{ManejadorCliente}.
 \end{itemize}
+
+El servidor utiliza un bucle infinito para aceptar conexiones entrantes, creando un hilo independiente para cada cliente. Esto permite atender m\'ultiples usuarios simult\'aneamente:
+
+\begin{lstlisting}
+# Servidor/servidor.py - Bucle de aceptacion de clientes
+while self._activo:
+    conexion, direccion = self._socket.accept()
+    manejador = ManejadorCliente(self, conexion, direccion)
+    with self._lock:
+        self._clientes.append(manejador)
+    hilo = threading.Thread(target=manejador.iniciar, daemon=True)
+    hilo.start()
+\end{lstlisting}
 
 \subsubsection{Lado del Cliente}
 El cliente proporciona la interfaz gr\'afica en Tkinter y procesa la interacci\'on con el usuario y la red:
@@ -493,6 +688,156 @@ def _mostrar_sala(self, codigo_sala, es_host, id_sala):
 
 \subsubsection{Template Method (M\'etodo Plantilla)}
 En la transmisi\'on de video, la captura e inicializaci\'on siguen un esqueleto predefinido (establecer conexi\'on, inicializar buffer, iterar captura, codificar, enviar y liberar recursos). La l\'ogica del bucle de captura se define en la superclase del gestor, mientras que los pasos espec\'ificos para la lectura de la c\'amara cambian seg\'un la estrategia.
+
+\subsubsection{Resumen de Patrones}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{3cm}p{3.5cm}p{8cm}}
+\toprule
+\textbf{Patr\'on} & \textbf{Clase principal} & \textbf{Uso} \\
+\midrule
+Singleton & \texttt{BaseDatos} & Garantiza una \'unica instancia de conexi\'on a la base de datos SQLite. \\
+Observer & \texttt{ClienteSocket} & Callbacks por tipo de mensaje; las pantallas se suscriben y reciben notificaciones. \\
+Strategy & \texttt{GestorVideo} & Selecciona din\'amicamente entre OpenCV y FFmpeg seg\'un el backend disponible. \\
+Facade & \texttt{ManejadorCliente} & Simplifica el acceso a \texttt{AuthService}, \texttt{BaseDatos} y el relay de mensajes. \\
+Command & Protocolo JSON & El campo \texttt{type} del mensaje act\'ua como comando para enrutar en el servidor. \\
+Factory Method & \texttt{MainApp} & M\'etodos \texttt{\_mostrar\_*()} crean las diferentes pantallas sin acoplar al flujo. \\
+Template Method & \texttt{GestorVideo} & Define el esqueleto de captura y env\'io; las subclases implementan la lectura. \\
+\bottomrule
+\end{tabular}
+\caption{Resumen de patrones de dise\~no implementados}
+\end{table}
+
+\subsection{Manejo de Errores}
+
+El sistema controla diversas situaciones de error para garantizar una experiencia de usuario estable:
+
+\begin{itemize}
+    \item \textbf{P\'erdida de conexi\'on del cliente:} El hilo listener detecta cuando \texttt{recv()} devuelve datos vac\'ios y marca la conexi\'on como cerrada. El servidor elimina al cliente de la lista de conexiones activas.
+    \item \textbf{Credenciales incorrectas:} \texttt{AuthService} retorna un mensaje con \texttt{status: error} que se muestra en la interfaz de login sin revelar informaci\'on sensible.
+    \item \textbf{C\'odigo de sala inv\'alido:} Al unirse a una sala, si el c\'odigo no existe en la base de datos, el servidor responde con un mensaje de error que el cliente muestra al usuario.
+    \item \textbf{Archivos rechazados:} Si el receptor rechaza la descarga, el archivo no se guarda en ese cliente y se muestra un mensaje informativo.
+    \item \textbf{Errores de c\'amara o micr\'ofono:} Los gestores capturan excepciones al abrir los dispositivos de hardware y notifican al usuario mediante mensajes en la interfaz. Si no se detecta micr\'ofono, se muestra un mensaje indic\'andolo.
+    \item \textbf{Timeout en operaciones:} \texttt{enviar\_y\_recibir()} tiene un timeout de 10 segundos. Si el servidor no responde en ese tiempo, se lanza una excepci\'on \texttt{ConnectionError} que la interfaz captura y muestra.
+\end{itemize}
+
+\begin{lstlisting}
+# Ejemplo: manejo de error en login
+try:
+    respuesta = self._cliente_socket.enviar_y_recibir({
+        "type": "LOGIN_REQUEST",
+        "correo": correo,
+        "clave": clave
+    })
+    if respuesta.get("status") == "success":
+        # Transicion a pantalla principal
+    else:
+        self._mensaje_error.config(text=respuesta.get("message", "Error desconocido"))
+except ConnectionError as e:
+    self._mensaje_error.config(text=str(e))
+\end{lstlisting}
+
+\subsection{Pruebas Realizadas}
+
+Se realizaron pruebas funcionales para verificar el correcto funcionamiento de los componentes principales del sistema:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{4.5cm}p{5cm}p{5cm}}
+\toprule
+\textbf{Prueba} & \textbf{Procedimiento} & \textbf{Resultado esperado} \\
+\midrule
+Login correcto & Ingresar credenciales v\'alidas (luis@email.com / 123456) & Acceso al sistema, muestra pantalla principal \\
+Login incorrecto & Ingresar credenciales inv\'alidas & Mensaje de error, permanece en login \\
+Crear sala & Presionar ``Crear Sala'' desde el men\'u principal & Sala registrada en BD, ingresa como host \\
+Unirse a sala v\'alida & Ingresar c\'odigo de sala existente & Solicitud enviada al host, espera admisi\'on \\
+Unirse a sala inv\'alida & Ingresar c\'odigo inexistente & Mensaje ``Sala no encontrada'' \\
+Enviar mensaje & Escribir mensaje y presionar Enter & Todos los participantes reciben el mensaje \\
+Compartir archivo & Seleccionar archivo desde el di\'alogo & Archivo fragmentado, enviado y reconstruido en receptor \\
+Activar c\'amara & Presionar ``Iniciar C\'amara'' & Frame capturado, codificado, enviado y mostrado en los dem\'as clientes \\
+Activar micr\'ofono & Presionar ``Iniciar Micr\'ofono'' & Audio capturado y transmitido en tiempo real \\
+Admitir usuario (host) & Seleccionar solicitante y presionar ``Admitir'' & Usuario admitido, ingresa a la sala \\
+Rechazar usuario (host) & Seleccionar solicitante y presionar ``Rechazar'' & Usuario notificado, regresa al men\'u \\
+Salir de sala & Presionar ``Salir de la Sala'' & C\'amara/mic detenidos, callbacks limpiados, vuelve al men\'u \\
+\bottomrule
+\end{tabular}
+\caption{Pruebas funcionales del sistema}
+\end{table}
+
+\section{Concurrencia}
+
+El sistema emplea el m\'odulo \texttt{threading} de Python para manejar m\'ultiples operaciones simult\'aneamente sin bloquear la interfaz de usuario ni el servidor.
+
+\subsection{Modelo de Concurrencia del Servidor}
+
+Cada cliente conectado genera un hilo independiente (\texttt{ManejadorCliente}) que corre en un bucle infinito escuchando mensajes. Esto permite que varios usuarios puedan usar el sistema simult\'aneamente sin bloquear la ejecuci\'on principal:
+
+\begin{lstlisting}[frame=single, basicstyle=\footnotesize\ttfamily, numbers=none]
+Servidor (hilo principal, bucle accept)
+  |
+  |-- Thread: Cliente 1 (ManejadorCliente)
+  |       Lee mensajes, procesa, responde
+  |
+  |-- Thread: Cliente 2 (ManejadorCliente)
+  |       Lee mensajes, procesa, responde
+  |
+  |-- Thread: Cliente 3 (ManejadorCliente)
+          Lee mensajes, procesa, responde
+\end{lstlisting}
+
+El servidor protege las estructuras compartidas (lista de clientes, estado de salas) con un \texttt{threading.Lock} para evitar condiciones de carrera al acceder desde m\'ultiples hilos.
+
+\subsection{Concurrencia en el Cliente}
+
+El cliente utiliza hilos daemon para las siguientes tareas:
+
+\begin{itemize}
+    \item \textbf{Hilo listener:} Escucha mensajes entrantes del servidor en segundo plano.
+    \item \textbf{Hilo de captura de video:} Captura frames de la c\'amara en un bucle cada 100 ms.
+    \item \textbf{Hilo de captura de audio:} Lee bloques del micr\'ofono y los env\'ia al servidor.
+    \item \textbf{Hilo de reproducci\'on de audio:} Lee de una cola FIFO y escribe en el altavoz.
+    \item \textbf{Hilo de env\'io de archivos:} Lee y fragmenta el archivo en segundo plano.
+\end{itemize}
+
+Todos los hilos del cliente son \texttt{daemon=True}, lo que asegura que se cierren autom\'aticamente al cerrar la ventana principal, evitando hilos hu\'erfanos.
+
+\section{Seguridad}
+
+El sistema implementa medidas de seguridad b\'asicas para proteger la informaci\'on de los usuarios:
+
+\subsection{Almacenamiento de Contrase\~nas}
+
+Las contrase\~nas nunca se almacenan en texto plano. Se utiliza el algoritmo \textbf{SHA-256} (FIPS 180-4) para generar un hash hexadecimal de 64 caracteres que se guarda en la base de datos:
+
+\begin{lstlisting}
+@staticmethod
+def hash_clave(clave):
+    return hashlib.sha256(clave.encode()).hexdigest()
+\end{lstlisting}
+
+Cuando un usuario inicia sesi\'on, el sistema calcula el hash de la contrase\~na ingresada y lo compara con el hash almacenado. Si coinciden, el acceso es concedido. Esto garantiza que incluso si la base de datos se ve comprometida, las contrase\~nas originales no quedan expuestas.
+
+\subsection{Validaci\'on de Autenticidad}
+
+Todas las operaciones sensibles (crear sala, unirse a sala, admitir usuarios) requieren que el usuario haya iniciado sesi\'on previamente. El servidor mantiene el estado de autenticaci\'on de cada conexi\'on y rechaza peticiones de usuarios no autenticados.
+
+Sin embargo, es importante se\~nalar que las comunicaciones no est\'an cifradas (no se usa TLS/SSL), no hay protecci\'on contra ataques de fuerza bruta en el login, y los tokens de sesi\'on son impl\'icitos (la conexi\'on TCP misma define la sesi\'on). Estas son limitaciones a considerar para una versi\'on de producci\'on.
+
+\section{Limitaciones Actuales}
+
+El sistema presenta las siguientes limitaciones identificadas, que representan oportunidades de mejora para versiones futuras:
+
+\begin{itemize}
+    \item \textbf{Latencia en video y audio:} Debido a que el sistema utiliza TCP para transportar video y audio, puede presentar mayor latencia comparado con protocolos especializados como UDP/RTP. TCP reintenta la transmisi\'on de paquetes perdidos, lo que puede causar retrasos acumulativos en tiempo real.
+    \item \textbf{Ancho de banda:} Los frames de video se transmiten como JPEG en Base64, lo que aumenta el tamaño del mensaje aproximadamente un 33\% respecto al binario original. Para 10 fps con calidad 50, cada frame puede ocupar entre 10 KB y 50 KB.
+    \item \textbf{Escalabilidad:} El servidor usa un hilo por cliente, lo que limita el n\'umero de conexiones simult\'aneas seg\'un la capacidad del hardware. Con 100+ clientes concurrentes, el cambio de contexto puede degradar el rendimiento.
+    \item \textbf{Almacenamiento de archivos:} Los archivos se cargan completamente en memoria antes de enviarse, lo que limita el tama\~no m\'aximo a la memoria RAM disponible. No hay streaming ni carga progresiva.
+    \item \textbf{Seguridad:} No hay cifrado de extremo a extremo ni protecci\'on contra ataques de intermediario (MITM) en la capa de transporte.
+    \item \textbf{Historial de chat:} Los mensajes de chat se almacenan en la base de datos pero no se recuperan al ingresar a una sala (no hay persistencia de historial visible para el usuario).
+\end{itemize}
 
 \section{Protocolos y Normativas Utilizados}
 
