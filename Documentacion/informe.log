@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.6.24)  24 JUN 2026 21:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.6.24)  26 JUN 2026 01:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -355,39 +355,53 @@ Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 (/usr/share/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2022/12/04 v6.7b set line spacing
 )
+(/usr/share/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+Package: pdflscape 2025-06-23 v0.14 Display of landscape pages in PDF
+
+(/usr/share/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+Package: pdflscape-nometadata 2025-06-23 v0.14 Display of landscape pages in PD
+F (HO)
+
+(/usr/share/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+))
 (/usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 )
 (/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count314
+) (./informe.aux
+LaTeX Info: Redefining \. on input line 11.
+LaTeX Info: Redefining \% on input line 11.
+Package babel Info: 'spanish' activates 'spanish' shorthands.
+(babel)             Reported on input line 11.
 )
-No file informe.aux.
 \openout1 = `informe.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Info: Redefining \. on input line 38.
-LaTeX Info: Redefining \% on input line 38.
-Package babel Info: 'spanish' activates 'spanish' shorthands.
-(babel)             Reported on input line 38.
-(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Info: Redefining \. on input line 39.
+LaTeX Info: Redefining \% on input line 39.
+ (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count315
 \scratchdimen=\dimen183
@@ -443,161 +457,235 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 38.
+Package hyperref Info: Link coloring OFF on input line 39.
+(./informe.out) (./informe.out)
 \@outlinefile=\write3
 \openout3 = `informe.out'.
 
 \c@lstlisting=\count321
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 50.
+(Font)              <12> on input line 51.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 50.
+(Font)              <8> on input line 51.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 50.
-[1
+(Font)              <6> on input line 51.
+ [1
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-No file informe.toc.
-\tf@toc=\write4
-\openout4 = `informe.toc'.
-
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./informe.toc
+LaTeX Info: Redefining \. on input line 1.
+LaTeX Info: Redefining \% on input line 1.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.63 \newpage
-              [1]
-Overfull \hbox (1.4287pt too wide) in paragraph at lines 67--68
+l.27 ...gy (Estrategia)}{17}{subsubsection.13.3.3}
+                                                  % [1])
+\tf@toc=\write4
+\openout4 = `informe.toc'.
+
+ [2]
+Overfull \hbox (1.4287pt too wide) in paragraph at lines 68--69
 []\OT1/cmr/m/n/12 El pre-sen-te do-cu-men-to des-cri-be el di-se~no e im-ple-me
 n-ta-ci^^Son de un \OT1/cmr/bx/n/12 pro-to-ti-po acad^^Semi-
  []
 
-[2]
-Overfull \hbox (10.86005pt too wide) in paragraph at lines 122--122
+[3]
+Overfull \hbox (10.86005pt too wide) in paragraph at lines 126--126
 []|\OT1/cmr/m/n/12 ArchivosCompartidos| 
  []
 
-<imagenes/casos_de_uso.png, id=24, 770.88pt x 991.705pt>
-File: imagenes/casos_de_uso.png Graphic file (type png)
-<use imagenes/casos_de_uso.png>
-Package pdftex.def Info: imagenes/casos_de_uso.png  used on input line 136.
-(pdftex.def)             Requested size: 409.71692pt x 527.0841pt.
-[3
+<imagenes/Entidad-Relacion.png, id=211, 538.01pt x 385.44pt>
+File: imagenes/Entidad-Relacion.png Graphic file (type png)
+<use imagenes/Entidad-Relacion.png>
+Package pdftex.def Info: imagenes/Entidad-Relacion.png  used on input line 136.
+
+(pdftex.def)             Requested size: 432.48051pt x 309.8404pt.
+[4
 pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.137 
+l.139 
       ]
-<imagenes/secuencia.png, id=32, 670.505pt x 1032.85875pt>
-File: imagenes/secuencia.png Graphic file (type png)
-<use imagenes/secuencia.png>
-Package pdftex.def Info: imagenes/secuencia.png  used on input line 146.
-(pdftex.def)             Requested size: 409.71692pt x 631.13037pt.
- [4
+<imagenes/casos_de_uso.png, id=217, 770.88pt x 991.705pt>
+File: imagenes/casos_de_uso.png Graphic file (type png)
+<use imagenes/casos_de_uso.png>
+Package pdftex.def Info: imagenes/casos_de_uso.png  used on input line 148.
+(pdftex.def)             Requested size: 409.71692pt x 527.0841pt.
+ [5
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.147 
-       <./imagenes/casos_de_uso.png>]
-<imagenes/actividades.png, id=40, 853.1875pt x 2033.5975pt>
-File: imagenes/actividades.png Graphic file (type png)
-<use imagenes/actividades.png>
-Package pdftex.def Info: imagenes/actividades.png  used on input line 152.
-(pdftex.def)             Requested size: 409.71692pt x 976.58119pt.
- [5
+l.149 
+       <./imagenes/Entidad-Relacion.png>]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 158.
+
+Underfull \hbox (badness 1005) in paragraph at lines 165--170
+\OT1/cmr/m/n/10.95 4. El ser-vi-dor res-pon-de con \OT1/cmtt/m/n/10.95 LOGIN[]R
+ESPONSE (status:
+ []
+
+[6
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.155 
-       <./imagenes/secuencia.png>] [6]
-Overfull \vbox (338.87476pt too high) has occurred while \output is active []
-
-
-[7
-pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.155 
-       <./imagenes/actividades.png>]
-<imagenes/clases.png, id=61, 2427.0675pt x 1075.01625pt>
-File: imagenes/clases.png Graphic file (type png)
-<use imagenes/clases.png>
-Package pdftex.def Info: imagenes/clases.png  used on input line 164.
-(pdftex.def)             Requested size: 409.71692pt x 181.47087pt.
- [8
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.193 
-       <./imagenes/clases.png (PNG copy)>] [9] [10] [11] [12] [13] [14]
-[15]
-Overfull \hbox (63.45088pt too wide) in paragraph at lines 522--523
-[]\OT1/cmr/m/n/12 Otras cla-ses que si-guen el mis-mo patr^^Son: \OT1/cmtt/m/n/
-12 LoginFrame(tk.Frame)\OT1/cmr/m/n/12 , \OT1/cmtt/m/n/12 PantallaPrincipal(tk.
-Frame)
- []
-
-[16]
-Overfull \hbox (7.0555pt too wide) in paragraph at lines 545--546
-\OT1/cmr/bx/n/12 Backends de c^^Sama-ra: \OT1/cmr/m/n/12 Los m^^Seto-dos []\OT1
-/cmtt/m/n/12 capturar[]con[]opencv() \OT1/cmr/m/n/12 y []\OT1/cmtt/m/n/12 captu
-rar[]con[]ffmpeg()
- []
-
-[17] [18] [19] [20]
-Overfull \hbox (9.53621pt too wide) in paragraph at lines 711--712
-[]\OT1/cmtt/m/n/12 ManejadorCliente \OT1/cmr/m/n/12 act^^Sua co-mo una fa-cha-d
-a que or-ques-ta tres sub-sis-te-mas: \OT1/cmtt/m/n/12 AuthService
- []
-
-[21]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 755.
-
-Underfull \hbox (badness 10000) in paragraph at lines 760--760
-[]|\OT1/cmr/m/n/10.95 Servidor $\OMS/cmsy/m/n/10.95 !$
- []
-
-
-Overfull \hbox (11.93109pt too wide) in paragraph at lines 763--763
-[]|\OT1/cmr/m/n/10.95 WAITING[]ROOM[]UPDATE|  
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 763--763
-[]|\OT1/cmr/m/n/10.95 Servidor $\OMS/cmsy/m/n/10.95 !$
- []
-
-
-Overfull \hbox (21.77359pt too wide) in paragraph at lines 755--776
- [][] 
- []
-
-[22] [23
+l.176 
+       <./imagenes/casos_de_uso.png>] [7
 pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.793     \end{lstlisting}
-                          ]
-Overfull \hbox (4.78941pt too wide) in paragraph at lines 810--810
-[]|\OT1/cmr/m/n/12 carlos@email.com| 
- []
-
-[24
+l.222 
+      
 pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.828 \end{document}
-                    ] (./informe.aux
+l.222 
+      ]
+Underfull \hbox (badness 1152) in paragraph at lines 258--259
+[]|\OT1/cmr/m/n/10.95 Clave pri-ma-ria au-to-in-cre-men-ta-ble. Iden-ti-fi-ca-d
+or
+ []
+
+[8
+pdfTeX warning (ext4): destination with the same identifier (name{table.4}) has
+ been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.268 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has
+ been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.268 
+      ]
+<imagenes/secuencia.png, id=250, 670.505pt x 1032.85875pt>
+File: imagenes/secuencia.png Graphic file (type png)
+<use imagenes/secuencia.png>
+Package pdftex.def Info: imagenes/secuencia.png  used on input line 314.
+(pdftex.def)             Requested size: 409.71692pt x 631.13037pt.
+ [9
+pdfTeX warning (ext4): destination with the same identifier (name{table.6}) has
+ been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.315 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{table.7}) has
+ been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.315 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{table.8}) has
+ been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.315 
+      ] [10
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.316 \clearpage
+                 <./imagenes/secuencia.png>]
+<imagenes/actividades.png, id=267, 486.81876pt x 1072.005pt>
+File: imagenes/actividades.png Graphic file (type png)
+<use imagenes/actividades.png>
+Package pdftex.def Info: imagenes/actividades.png  used on input line 321.
+(pdftex.def)             Requested size: 223.39708pt x 491.9342pt.
+ [11
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.325 \clearpage
+                 <./imagenes/actividades.png>]
+<imagenes/clases.png, id=274, 2427.0675pt x 1075.01625pt>
+File: imagenes/clases.png Graphic file (type png)
+<use imagenes/clases.png>
+Package pdftex.def Info: imagenes/clases.png  used on input line 331.
+(pdftex.def)             Requested size: 667.64932pt x 295.7206pt.
+ [12
+
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.334 \end{landscape}
+                      <./imagenes/clases.png (PNG copy)>]
+Overfull \hbox (2.08052pt too wide) in paragraph at lines 358--359
+[]\OT1/cmr/bx/n/12 MainApp \OT1/cmr/m/n/12 (\OT1/cmtt/m/n/12 Cliente/main.py\OT
+1/cmr/m/n/12 ): Ven-ta-na ra^^S^^Pz de Tkin-ter que ad-mi-nis-tra la transici^^
+Son
+ []
+
+[13
+
+
+]
+Overfull \hbox (8.61507pt too wide) in paragraph at lines 361--362
+[]\OT1/cmr/bx/n/12 Pantallas \OT1/cmr/m/n/12 (\OT1/cmtt/m/n/12 LoginFrame, Pant
+allaPrincipal, PantallaSala, PanelVideo\OT1/cmr/m/n/12 ): Sub-
+ []
+
+
+Overfull \hbox (10.35146pt too wide) in paragraph at lines 368--369
+[]\OT1/cmr/bx/n/12 GestorAudio \OT1/cmr/m/n/12 (\OT1/cmtt/m/n/12 Cliente/gestor
+es/gestor[]audio.py\OT1/cmr/m/n/12 ): Cap-tu-ra au-dio en PCM usan-
+ []
+
+[14] [15] [16] [17] [18]
+Underfull \hbox (badness 10000) in paragraph at lines 520--520
+[]|\OT1/cmr/m/n/10.95 Servidor $\OMS/cmsy/m/n/10.95 !$
+ []
+
+
+Overfull \hbox (11.93109pt too wide) in paragraph at lines 523--523
+[]|\OT1/cmr/m/n/10.95 WAITING[]ROOM[]UPDATE|  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 523--523
+[]|\OT1/cmr/m/n/10.95 Servidor $\OMS/cmsy/m/n/10.95 !$
+ []
+
+
+Overfull \hbox (21.77359pt too wide) in paragraph at lines 515--536
+ [][] 
+ []
+
+[19
+pdfTeX warning (ext4): destination with the same identifier (name{table.9}) has
+ been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.544     \item P
+                 illow (instalar con \texttt{pip install -r requirements.txt})]
+
+Overfull \hbox (4.78941pt too wide) in paragraph at lines 570--570
+[]|\OT1/cmr/m/n/12 carlos@email.com| 
+ []
+
+[20
+pdfTeX warning (ext4): destination with the same identifier (name{table.10}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.583     \item L
+                 a POO permiti\'o organizar el c\'odigo en clases especializ...
+] [21] (./informe.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
 )
@@ -605,37 +693,29 @@ LaTeX Info: Redefining \% on input line 11.
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-
-
-Package rerunfilecheck Warning: File `informe.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `informe.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  EF2114337A158C8BFC5970647BC5CE19;5932.
+Package rerunfilecheck Info: File `informe.out' has not changed.
+(rerunfilecheck)             Checksum: F0560A40B0DB22A85B3A91CBF3A2F876;6345.
  ) 
 Here is how much of TeX's memory you used:
- 13853 strings out of 469453
- 211329 string characters out of 5469037
- 1014132 words of memory out of 5000000
- 41976 multiletter control sequences out of 15000+600000
- 634489 words of font info for 63 fonts, out of 8000000 for 9000
+ 13595 strings out of 469453
+ 208634 string characters out of 5469037
+ 953880 words of memory out of 5000000
+ 41959 multiletter control sequences out of 15000+600000
+ 634310 words of font info for 63 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
- 75i,13n,79p,398b,2008s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,13n,79p,437b,1998s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 r17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/sh
 are/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmtt10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmtt12.pfb>
-Output written on informe.pdf (25 pages, 553356 bytes).
+/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmtt12.pfb>
+Output written on informe.pdf (22 pages, 489133 bytes).
 PDF statistics:
- 645 PDF objects out of 1000 (max. 8388607)
- 585 compressed objects within 6 object streams
- 411 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 469 PDF objects out of 1000 (max. 8388607)
+ 413 compressed objects within 5 object streams
+ 153 named destinations out of 1000 (max. 500000)
+ 322 words of extra memory for PDF output out of 10000 (max. 10000000)
 

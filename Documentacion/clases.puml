@@ -1,0 +1,76 @@
+@startuml
+skinparam class {
+  BackgroundColor White
+  BorderColor #2E86C1
+  FontColor #2E86C1
+}
+
+class ClienteSocket {
+  + conectar()
+  + enviar(mensaje)
+  + enviar_y_recibir(datos)
+  + registrar_callback(tipo, cb)
+}
+
+class Usuario {
+  - id_usuario
+  - nombres
+  - correo
+  - rol
+  + es_host()
+}
+
+class PantallaPrincipal {
+  - _crear_sala()
+  - _unirse_sala()
+}
+
+class PantallaSala {
+  - _enviar_mensaje()
+  - _toggle_camara()
+  - _toggle_mic()
+}
+
+class Servidor {
+  - _clientes[]
+  - _salas{}
+  + reenviar_a_sala()
+}
+
+class ManejadorCliente {
+  - _usuario_actual
+  - _sala_actual
+  - _procesar_mensaje()
+}
+
+class Protocolo {
+  + LOGIN_REQUEST
+  + CREATE_ROOM
+  + CHAT_MESSAGE
+  + CAMERA_FRAME
+  + AUDIO_FRAME
+  + ROOM_PARTICIPANTS
+}
+
+class BaseDatos {
+  + inicializar()
+  + conectar()
+}
+
+class AuthService {
+  + validar_login()
+}
+
+ClienteSocket --> Protocolo : usa
+Servidor --> Protocolo : usa
+
+PantallaPrincipal --> ClienteSocket : usa
+PantallaSala --> ClienteSocket : usa
+PantallaPrincipal --> Usuario : usa
+PantallaSala --> Usuario : usa
+
+Servidor --> ManejadorCliente : contiene
+Servidor --> BaseDatos : usa
+ManejadorCliente --> AuthService : usa
+ManejadorCliente --> Protocolo : usa
+@enduml

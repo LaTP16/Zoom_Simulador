@@ -37,6 +37,10 @@ class ManejadorCliente:
                 print(f"[ERROR] {e}")
                 break
         print(f"[DESCONEXIÓN] Cliente {self._direccion} se ha desconectado")
+        if self._sala_actual:
+            codigo = self._sala_actual
+            self._sala_actual = None
+            self._servidor.broadcast_participantes(codigo)
         self._conexion.close()
         self._servidor.remover_cliente(self)
 
@@ -60,8 +64,13 @@ class ManejadorCliente:
             self._servidor.reenviar_a_sala(mensaje.get("roomCode"), mensaje, self)
         elif tipo == Protocolo.AUDIO_FRAME:
             self._servidor.reenviar_a_sala(mensaje.get("roomCode"), mensaje, self)
+        elif tipo == Protocolo.GET_ROOM_PARTICIPANTS:
+            self._servidor.broadcast_participantes(mensaje.get("roomCode"))
         elif tipo == Protocolo.LEAVE_ROOM:
+            codigo = self._sala_actual
             self._sala_actual = None
+            if codigo:
+                self._servidor.broadcast_participantes(codigo)
 
     def _manejar_login(self, mensaje):
         respuesta = self._auth_service.validar_login(
@@ -169,6 +178,7 @@ class ManejadorCliente:
                     "idSala": mensaje["idSala"],
                     "codigo": codigo
                 })
+            self._servidor.broadcast_participantes(codigo)
         except Exception as e:
             print(f"[ERROR] Admitir usuario: {e}")
 

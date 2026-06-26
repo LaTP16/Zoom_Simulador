@@ -1,0 +1,39 @@
+@startuml
+start
+:Iniciar Sesión;
+
+if (¿Credenciales válidas?) then (Sí)
+  :Ver menú principal;
+  
+  if (¿Rol Host?) then (Sí)
+    :Crear sala;
+    :Compartir código;
+  else (No)
+    :Ingresar código de sala;
+  endif
+
+  :Unirse a sala;
+
+  while (En sala)
+    if (¿Activar cámara?) then (Sí)
+      :Transmitir video;
+    endif
+
+    if (¿Activar micrófono?) then (Sí)
+      :Transmitir audio;
+    endif
+
+    :Enviar/recibir mensajes;
+    :Compartir/descargar archivos;
+  endwhile
+
+  :Salir de sala;
+  :Volver al menú;
+  
+else (No)
+  :Mostrar error;
+  :Reintentar login;
+endif
+
+stop
+@enduml

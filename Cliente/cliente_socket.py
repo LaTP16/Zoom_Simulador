@@ -62,7 +62,7 @@ class ClienteSocket:
         except (socket.error, ConnectionRefusedError) as e:
             raise ConnectionError(f"No se pudo conectar al servidor: {e}")
 
-    def enviar_y_recibir(self, datos):
+    def enviar_y_recibir(self, datos, response_type=None):
         if not self._conectado:
             self.conectar()
         respuesta = [None]
@@ -72,10 +72,11 @@ class ClienteSocket:
             respuesta[0] = msg
             evento.set()
 
-        self.registrar_callback("any", cb)
+        tipo = response_type or "any"
+        self.registrar_callback(tipo, cb)
         self.enviar(datos)
         evento.wait(timeout=10)
-        self.remover_callback("any")
+        self.remover_callback(tipo)
         if not evento.is_set():
             raise ConnectionError("Tiempo de espera agotado")
         return respuesta[0]

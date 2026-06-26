@@ -1,0 +1,43 @@
+@startuml
+skinparam entity {
+  BackgroundColor White
+  BorderColor #2E86C1
+  FontColor #2E86C1
+}
+
+entity Usuario {
+  * IdUsuario
+}
+
+entity Sala {
+  * IdSala
+  * IdHost
+}
+
+entity Participante {
+  * IdParticipante
+}
+
+entity Solicitud {
+  * IdSolicitud
+}
+
+entity Mensaje {
+  * IdMensaje
+}
+
+entity Archivo {
+  * IdArchivo
+}
+
+Usuario ||--o{ Sala : "crea"
+Usuario ||--o{ Participante : ""
+Usuario ||--o{ Solicitud : ""
+Usuario ||--o{ Mensaje : ""
+Usuario ||--o{ Archivo : ""
+
+Sala ||--o{ Participante : ""
+Sala ||--o{ Solicitud : ""
+Sala ||--o{ Mensaje : ""
+Sala ||--o{ Archivo : ""
+@enduml

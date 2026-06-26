@@ -55,6 +55,25 @@ class Servidor:
                 if cliente._sala_actual == codigo_sala and cliente != emisor:
                     cliente._enviar(mensaje)
 
+    def obtener_participantes_sala(self, codigo_sala):
+        with self._lock:
+            participantes = []
+            for cliente in self._clientes:
+                if cliente._sala_actual == codigo_sala and cliente._usuario_actual:
+                    participantes.append({
+                        "idUsuario": cliente._usuario_actual["idUsuario"],
+                        "nombres": cliente._usuario_actual["nombres"]
+                    })
+            return participantes
+
+    def broadcast_participantes(self, codigo_sala):
+        participantes = self.obtener_participantes_sala(codigo_sala)
+        mensaje = {"type": "ROOM_PARTICIPANTS", "roomCode": codigo_sala, "participants": participantes}
+        with self._lock:
+            for cliente in self._clientes:
+                if cliente._sala_actual == codigo_sala:
+                    cliente._enviar(mensaje)
+
     def buscar_cliente_por_usuario(self, id_usuario):
         with self._lock:
             for cliente in self._clientes:

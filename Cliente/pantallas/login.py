@@ -45,7 +45,7 @@ class LoginFrame(tk.Frame):
                 "type": "LOGIN_REQUEST",
                 "correo": correo,
                 "clave": clave
-            })
+            }, response_type="LOGIN_RESPONSE")
 
             if respuesta.get("status") == "success":
                 usuario = Usuario(

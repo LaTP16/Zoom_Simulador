@@ -42,7 +42,7 @@ class PantallaPrincipal(tk.Frame):
             "nombre": f"Sala de {self._usuario.nombres}",
             "codigo": codigo,
             "idHost": self._usuario.id_usuario
-        })
+        }, response_type="CREATE_ROOM")
         if respuesta.get("status") == "success":
             self._on_entrar_sala(codigo, True, respuesta["idSala"])
         else:
@@ -69,7 +69,7 @@ class PantallaPrincipal(tk.Frame):
                 "type": "JOIN_ROOM_REQUEST",
                 "codigo": codigo,
                 "idUsuario": self._usuario.id_usuario
-            })
+            }, response_type="JOIN_ROOM_REQUEST")
             if respuesta.get("status") == "success":
                 if respuesta.get("admitido"):
                     self._on_entrar_sala(codigo, False, respuesta["idSala"])
