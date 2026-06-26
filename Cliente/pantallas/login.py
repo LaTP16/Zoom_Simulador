@@ -1,9 +1,10 @@
+import customtkinter as ctk
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import messagebox
 from Cliente.cliente_socket import ClienteSocket
 from Cliente.modelos.usuario import Usuario
 
-class LoginFrame(tk.Frame):
+class LoginFrame(ctk.CTkFrame):
     def __init__(self, master, on_login_exitoso, host="127.0.0.1", puerto=5000):
         super().__init__(master)
         self._on_login_exitoso = on_login_exitoso
@@ -11,22 +12,22 @@ class LoginFrame(tk.Frame):
         self._crear_widgets()
 
     def _crear_widgets(self):
-        tk.Label(self, text="Correo electrónico:", font=("Arial", 10)).pack(pady=(20, 5))
-        self._entrada_correo = tk.Entry(self, width=30, font=("Arial", 10))
+        ctk.CTkLabel(self, text="Correo electrónico:", font=("Arial", 11, "bold")).pack(pady=(30, 5))
+        self._entrada_correo = ctk.CTkEntry(self, width=250, font=("Arial", 11))
         self._entrada_correo.pack()
 
-        tk.Label(self, text="Contraseña:", font=("Arial", 10)).pack(pady=(10, 5))
-        self._entrada_clave = tk.Entry(self, width=30, show="*", font=("Arial", 10))
+        ctk.CTkLabel(self, text="Contraseña:", font=("Arial", 11, "bold")).pack(pady=(15, 5))
+        self._entrada_clave = ctk.CTkEntry(self, width=250, show="*", font=("Arial", 11))
         self._entrada_clave.pack()
         self._entrada_clave.bind("<Return>", lambda e: self._procesar_login())
 
-        self._btn_ingresar = tk.Button(
+        self._btn_ingresar = ctk.CTkButton(
             self, text="Ingresar", command=self._procesar_login,
-            width=15, font=("Arial", 10), bg="#4CAF50", fg="white"
+            width=150, font=("Arial", 11, "bold"), fg_color="#4CAF50", text_color="white"
         )
-        self._btn_ingresar.pack(pady=20)
+        self._btn_ingresar.pack(pady=25)
 
-        self._mensaje_error = tk.Label(self, text="", fg="red", font=("Arial", 9))
+        self._mensaje_error = ctk.CTkLabel(self, text="", text_color="#f44336", font=("Arial", 10))
         self._mensaje_error.pack()
 
     def _procesar_login(self):
@@ -37,7 +38,7 @@ class LoginFrame(tk.Frame):
             messagebox.showwarning("Atención", "Por favor, completa todos los campos.")
             return
 
-        self._btn_ingresar.config(state=tk.DISABLED, text="Conectando...")
+        self._btn_ingresar.configure(state="disabled", text="Conectando...")
         self.update()
 
         try:
@@ -57,8 +58,9 @@ class LoginFrame(tk.Frame):
                 messagebox.showinfo("Éxito", f"Bienvenido, {usuario.nombres}")
                 self.after(0, self._on_login_exitoso, usuario, self._cliente_socket)
             else:
-                self._mensaje_error.config(text=respuesta.get("message", "Error desconocido"))
+                self._mensaje_error.configure(text=respuesta.get("message", "Error desconocido"))
         except ConnectionError as e:
-            self._mensaje_error.config(text=str(e))
+            self._mensaje_error.configure(text=str(e))
         finally:
-            self._btn_ingresar.config(state=tk.NORMAL, text="Ingresar")
+            self._btn_ingresar.configure(state="normal", text="Ingresar")
+

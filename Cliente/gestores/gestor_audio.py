@@ -40,7 +40,7 @@ class GestorAudio:
         if self._mic_activo:
             self._capturando_mic = False
             self._mic_activo = False
-            self._btn_mic.config(text="🎤 Iniciar Micrófono", bg="#4CAF50")
+            self._btn_mic.configure(text="🎤 Iniciar Micrófono", fg_color="#4CAF50")
         else:
             try:
                 devices = sd.query_devices()
@@ -54,7 +54,7 @@ class GestorAudio:
 
             self._mic_activo = True
             self._capturando_mic = True
-            self._btn_mic.config(text="🎤 Silenciar Micrófono", bg="#f44336")
+            self._btn_mic.configure(text="🎤 Silenciar Micrófono", fg_color="#f44336")
             threading.Thread(target=self._capturar_y_enviar_audio, daemon=True).start()
 
     def detener(self):
@@ -108,7 +108,7 @@ class GestorAudio:
             self._master.after(0, self._on_mensaje, f"❌ Error en el micrófono: {e}")
             self._master.after(
                 0,
-                lambda: self._btn_mic.config(text="🎤 Iniciar Micrófono", bg="#4CAF50")
+                lambda: self._btn_mic.configure(text="🎤 Iniciar Micrófono", fg_color="#4CAF50")
             )
             self._mic_activo = False
             self._capturando_mic = False

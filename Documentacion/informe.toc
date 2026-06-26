@@ -1,54 +1,60 @@
 \babel@toc {spanish}{}\relax 
-\contentsline {section}{\numberline {1}Introducci\'on}{3}{section.1}%
-\contentsline {section}{\numberline {2}Objetivos}{3}{section.2}%
-\contentsline {section}{\numberline {3}Tecnolog\'ias Utilizadas}{3}{section.3}%
-\contentsline {section}{\numberline {4}Arquitectura del Sistema}{4}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Requisitos Funcionales}{4}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Requisitos No Funcionales}{4}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Base de Datos}{4}{section.5}%
-\contentsline {section}{\numberline {6}Diagrama Entidad-Relaci\'on}{6}{section.6}%
-\contentsline {section}{\numberline {7}Diagrama de Casos de Uso}{7}{section.7}%
-\contentsline {section}{\numberline {8}Especificaci\'on de Casos de Uso}{7}{section.8}%
-\contentsline {section}{\numberline {9}Diccionario de Datos}{9}{section.9}%
-\contentsline {section}{\numberline {10}Diagrama de Secuencia}{11}{section.10}%
-\contentsline {section}{\numberline {11}Diagrama de Actividades}{12}{section.11}%
-\contentsline {section}{\numberline {12}Diagrama de Clases}{13}{section.12}%
-\contentsline {section}{\numberline {13}Descripci\'on del C\'odigo}{14}{section.13}%
-\contentsline {subsection}{\numberline {13.1}Estructura del Proyecto}{14}{subsection.13.1}%
-\contentsline {subsection}{\numberline {13.2}Arquitectura de M\'odulos}{15}{subsection.13.2}%
-\contentsline {subsection}{\numberline {13.3}Clases Principales}{15}{subsection.13.3}%
-\contentsline {subsection}{\numberline {13.4}Flujo de Ejecuci\'on}{16}{subsection.13.4}%
-\contentsline {subsection}{\numberline {13.5}Funcionamiento de las Clases y Componentes}{17}{subsection.13.5}%
-\contentsline {subsubsection}{\numberline {13.5.1}Lado del Servidor}{17}{subsubsection.13.5.1}%
-\contentsline {subsubsection}{\numberline {13.5.2}Lado del Cliente}{18}{subsubsection.13.5.2}%
-\contentsline {subsubsection}{\numberline {13.5.3}Gestores de Red y Hardware}{19}{subsubsection.13.5.3}%
-\contentsline {subsection}{\numberline {13.6}Aplicaci\'on de los Pilares de la POO}{19}{subsection.13.6}%
-\contentsline {subsubsection}{\numberline {13.6.1}Encapsulamiento}{19}{subsubsection.13.6.1}%
-\contentsline {subsubsection}{\numberline {13.6.2}Herencia}{20}{subsubsection.13.6.2}%
-\contentsline {subsubsection}{\numberline {13.6.3}Polimorfismo}{20}{subsubsection.13.6.3}%
-\contentsline {subsubsection}{\numberline {13.6.4}Abstracci\'on}{20}{subsubsection.13.6.4}%
-\contentsline {subsection}{\numberline {13.7}Patrones de Dise\~no Implementados}{21}{subsection.13.7}%
-\contentsline {subsubsection}{\numberline {13.7.1}Singleton (Instancia \'{U}nica)}{21}{subsubsection.13.7.1}%
-\contentsline {subsubsection}{\numberline {13.7.2}Observer (Observador)}{21}{subsubsection.13.7.2}%
-\contentsline {subsubsection}{\numberline {13.7.3}Strategy (Estrategia)}{22}{subsubsection.13.7.3}%
-\contentsline {subsubsection}{\numberline {13.7.4}Facade (Fachada)}{22}{subsubsection.13.7.4}%
-\contentsline {subsubsection}{\numberline {13.7.5}Command (Comando)}{22}{subsubsection.13.7.5}%
-\contentsline {subsubsection}{\numberline {13.7.6}Factory Method (M\'etodo F\'abrica)}{22}{subsubsection.13.7.6}%
-\contentsline {subsubsection}{\numberline {13.7.7}Template Method (M\'etodo Plantilla)}{23}{subsubsection.13.7.7}%
-\contentsline {subsubsection}{\numberline {13.7.8}Resumen de Patrones}{23}{subsubsection.13.7.8}%
-\contentsline {subsection}{\numberline {13.8}Manejo de Errores}{23}{subsection.13.8}%
-\contentsline {subsection}{\numberline {13.9}Pruebas Realizadas}{24}{subsection.13.9}%
-\contentsline {section}{\numberline {14}Concurrencia}{25}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Modelo de Concurrencia del Servidor}{25}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}Concurrencia en el Cliente}{26}{subsection.14.2}%
-\contentsline {section}{\numberline {15}Seguridad}{26}{section.15}%
-\contentsline {subsection}{\numberline {15.1}Almacenamiento de Contrase\~nas}{26}{subsection.15.1}%
-\contentsline {subsection}{\numberline {15.2}Validaci\'on de Autenticidad}{27}{subsection.15.2}%
-\contentsline {section}{\numberline {16}Limitaciones Actuales}{27}{section.16}%
-\contentsline {section}{\numberline {17}Protocolos y Normativas Utilizados}{28}{section.17}%
-\contentsline {subsection}{\numberline {17.1}Tabla de Mensajes del Protocolo}{29}{subsection.17.1}%
-\contentsline {section}{\numberline {18}Manual de Instalaci\'on y Ejecuci\'on}{29}{section.18}%
-\contentsline {subsection}{\numberline {18.1}Requisitos}{29}{subsection.18.1}%
-\contentsline {subsection}{\numberline {18.2}Ejecuci\'on}{29}{subsection.18.2}%
-\contentsline {subsection}{\numberline {18.3}Datos de Prueba}{31}{subsection.18.3}%
-\contentsline {section}{\numberline {19}Conclusiones}{31}{section.19}%
+\contentsline {section}{\numberline {1}Introducci\'on}{4}{section.1}%
+\contentsline {section}{\numberline {2}Objetivos}{4}{section.2}%
+\contentsline {section}{\numberline {3}Tecnolog\'ias Utilizadas}{4}{section.3}%
+\contentsline {section}{\numberline {4}Arquitectura del Sistema}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Requisitos Funcionales}{5}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Requisitos No Funcionales}{5}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Base de Datos}{5}{section.5}%
+\contentsline {section}{\numberline {6}Diagrama Entidad-Relaci\'on}{7}{section.6}%
+\contentsline {section}{\numberline {7}Diagrama de Casos de Uso}{8}{section.7}%
+\contentsline {section}{\numberline {8}Especificaci\'on de Casos de Uso}{9}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Inventario de Casos de Uso}{9}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Especificaciones Detalladas}{9}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Diccionario de Datos}{11}{section.9}%
+\contentsline {section}{\numberline {10}Diagrama de Secuencia}{13}{section.10}%
+\contentsline {section}{\numberline {11}Diagrama de Actividades}{14}{section.11}%
+\contentsline {section}{\numberline {12}Diagrama de Clases}{15}{section.12}%
+\contentsline {section}{\numberline {13}Descripci\'on del C\'odigo}{16}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Estructura del Proyecto}{16}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Arquitectura de M\'odulos}{17}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Clases Principales}{17}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Flujo de Ejecuci\'on}{18}{subsection.13.4}%
+\contentsline {subsection}{\numberline {13.5}Funcionamiento de las Clases y Componentes}{19}{subsection.13.5}%
+\contentsline {subsubsection}{\numberline {13.5.1}Lado del Servidor}{19}{subsubsection.13.5.1}%
+\contentsline {subsubsection}{\numberline {13.5.2}Lado del Cliente}{20}{subsubsection.13.5.2}%
+\contentsline {subsubsection}{\numberline {13.5.3}Gestores de Red y Hardware}{21}{subsubsection.13.5.3}%
+\contentsline {subsection}{\numberline {13.6}Aplicaci\'on de los Pilares de la POO}{21}{subsection.13.6}%
+\contentsline {subsubsection}{\numberline {13.6.1}Encapsulamiento}{21}{subsubsection.13.6.1}%
+\contentsline {subsubsection}{\numberline {13.6.2}Herencia}{22}{subsubsection.13.6.2}%
+\contentsline {subsubsection}{\numberline {13.6.3}Polimorfismo}{22}{subsubsection.13.6.3}%
+\contentsline {subsubsection}{\numberline {13.6.4}Abstracci\'on}{22}{subsubsection.13.6.4}%
+\contentsline {subsection}{\numberline {13.7}Patrones de Dise\~no Implementados}{23}{subsection.13.7}%
+\contentsline {subsubsection}{\numberline {13.7.1}Singleton (Instancia \'{U}nica)}{23}{subsubsection.13.7.1}%
+\contentsline {subsubsection}{\numberline {13.7.2}Observer (Observador)}{23}{subsubsection.13.7.2}%
+\contentsline {subsubsection}{\numberline {13.7.3}Strategy (Estrategia)}{24}{subsubsection.13.7.3}%
+\contentsline {subsubsection}{\numberline {13.7.4}Facade (Fachada)}{24}{subsubsection.13.7.4}%
+\contentsline {subsubsection}{\numberline {13.7.5}Command (Comando)}{24}{subsubsection.13.7.5}%
+\contentsline {subsubsection}{\numberline {13.7.6}Factory Method (M\'etodo F\'abrica)}{24}{subsubsection.13.7.6}%
+\contentsline {subsubsection}{\numberline {13.7.7}Template Method (M\'etodo Plantilla)}{25}{subsubsection.13.7.7}%
+\contentsline {subsubsection}{\numberline {13.7.8}Resumen de Patrones}{25}{subsubsection.13.7.8}%
+\contentsline {subsection}{\numberline {13.8}Manejo de Errores}{25}{subsection.13.8}%
+\contentsline {subsection}{\numberline {13.9}Pruebas Realizadas}{26}{subsection.13.9}%
+\contentsline {section}{\numberline {14}Concurrencia}{27}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Modelo de Concurrencia del Servidor}{27}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Concurrencia en el Cliente}{28}{subsection.14.2}%
+\contentsline {section}{\numberline {15}Seguridad}{28}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Almacenamiento de Contrase\~nas}{28}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Validaci\'on de Autenticidad}{29}{subsection.15.2}%
+\contentsline {section}{\numberline {16}Limitaciones Actuales}{29}{section.16}%
+\contentsline {section}{\numberline {17}Protocolos y Normativas Utilizados}{30}{section.17}%
+\contentsline {subsection}{\numberline {17.1}Tabla de Mensajes del Protocolo}{31}{subsection.17.1}%
+\contentsline {section}{\numberline {18}Manual de Instalaci\'on y Ejecuci\'on}{32}{section.18}%
+\contentsline {subsection}{\numberline {18.1}Requisitos}{32}{subsection.18.1}%
+\contentsline {subsubsection}{\numberline {18.1.1}1. Librer\'{\i }as de Python}{32}{subsubsection.18.1.1}%
+\contentsline {subsubsection}{\numberline {18.1.2}2. Dependencias del Sistema}{32}{subsubsection.18.1.2}%
+\contentsline {subsection}{\numberline {18.2}Ejecuci\'on}{33}{subsection.18.2}%
+\contentsline {subsection}{\numberline {18.3}Datos de Prueba}{33}{subsection.18.3}%
+\contentsline {section}{\numberline {19}Conclusiones}{33}{section.19}%
+\contentsline {section}{\numberline {20}Anexos}{34}{section.20}%
+\contentsline {subsection}{\numberline {20.1}Repositorio del Proyecto}{34}{subsection.20.1}%

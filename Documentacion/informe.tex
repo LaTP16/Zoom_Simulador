@@ -204,7 +204,31 @@ La base de datos SQLite contiene las siguientes tablas:
 
 \section{Especificaci\'on de Casos de Uso}
 
-Se describen a continuaci\'on los casos de uso principales del sistema.
+\subsection{Inventario de Casos de Uso}
+A continuaci\'on se presenta la lista general y descripci\'on breve de los casos de uso que componen el prototipo:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{llp{9.5cm}}
+\toprule
+\textbf{C\'odigo} & \textbf{Caso de Uso} & \textbf{Descripci\'on Breve} \\
+\midrule
+CU-01 & Iniciar Sesi\'on & Permite al usuario autenticarse en el sistema mediante su correo y contrase\~na. \\
+CU-02 & Crear Sala & Permite a un anfitri\'on (Host) abrir una nueva sala virtual para una reuni\'on. \\
+CU-03 & Unirse a Sala & Permite a un participante ingresar el c\'odigo de una sala activa y solicitar acceso. \\
+CU-04 & Enviar Archivo & Permite compartir un documento dividi\'endolo en fragmentos para su descarga. \\
+CU-05 & Transmitir Video & Permite capturar y enviar frames comprimidos de la c\'amara local a los dem\'as participantes. \\
+CU-06 & Transmitir Audio & Permite capturar y reproducir flujos de voz en tiempo real desde el micr\'ofono. \\
+CU-07 & Expulsar Participante & Permite al anfitri\'on expulsar de la sala activa a un participante admitido. \\
+CU-08 & Finalizar Sala & Permite al anfitri\'on cerrar formalmente la reuni\'on para todos los integrantes. \\
+\bottomrule
+\end{tabular}
+\caption{Inventario de casos de uso del prototipo}
+\end{table}
+
+\subsection{Especificaciones Detalladas}
+Se describen a continuaci\'on los flujos detallados de los casos de uso principales del sistema.
 
 \subsection*{CU-01: Iniciar Sesi\'on}
 \begin{table}[H]

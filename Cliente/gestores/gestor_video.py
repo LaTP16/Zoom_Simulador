@@ -60,8 +60,8 @@ class GestorVideo:
         """Detiene la captura de video y notifica al servidor."""
         self._capturando = False
         self._camara_activa = False
-        self._btn_camara.config(text="📷 Iniciar Cámara", bg="#4CAF50")
-        self._label_cam_status.config(text="")
+        self._btn_camara.configure(text="📷 Iniciar Cámara", fg_color="#4CAF50")
+        self._label_cam_status.configure(text="")
 
         if self._video_proc:
             self._video_proc.terminate()
@@ -121,8 +121,8 @@ class GestorVideo:
             return
         self._capturando = True
         self._camara_activa = True
-        self._btn_camara.config(text="📷 Detener Cámara", bg="#f44336")
-        self._label_cam_status.config(text="Iniciando cámara...")
+        self._btn_camara.configure(text="📷 Detener Cámara", fg_color="#f44336")
+        self._label_cam_status.configure(text="Iniciando cámara...")
 
         self._video_panel_local = PanelVideo(
             self._frame_video_panels,
@@ -157,7 +157,7 @@ class GestorVideo:
             self._master.after(0, self.detener_captura)
             return
 
-        self._master.after(0, lambda: self._label_cam_status.config(text="Cámara activa"))
+        self._master.after(0, lambda: self._label_cam_status.configure(text="Cámara activa"))
         while self._capturando and self._cliente_socket._conectado:
             ret, frame = cap.read()
             if not ret:
@@ -193,7 +193,7 @@ class GestorVideo:
         )
         self._video_proc = proc
 
-        self._master.after(0, lambda: self._label_cam_status.config(text="Cámara activa"))
+        self._master.after(0, lambda: self._label_cam_status.configure(text="Cámara activa"))
         buffer = b""
         while self._capturando and self._cliente_socket._conectado:
             try:

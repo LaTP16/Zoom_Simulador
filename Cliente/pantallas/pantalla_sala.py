@@ -1,4 +1,5 @@
 import os
+import customtkinter as ctk
 import tkinter as tk
 from tkinter import scrolledtext, messagebox
 from Cliente.modelos.mensaje import Mensaje
@@ -8,7 +9,7 @@ from Cliente.gestores.gestor_archivos import GestorArchivos
 
 
 
-class PantallaSala(tk.Frame):
+class PantallaSala(ctk.CTkFrame):
     """
     Pantalla principal de la sala de reunión.
     Se encarga únicamente de la UI y la coordinación entre los gestores;
@@ -40,98 +41,118 @@ class PantallaSala(tk.Frame):
     # ------------------------------------------------------------------
 
     def _crear_widgets(self):
-        tk.Label(self, text=f"Sala: {self._codigo_sala}",
-                 font=("Arial", 12, "bold")).pack(pady=(10, 5))
+        ctk.CTkLabel(self, text=f"Sala: {self._codigo_sala}",
+                  font=("Arial", 14, "bold")).pack(pady=(10, 5))
 
         # Área de video
-        self._frame_video_container = tk.Frame(self, bg="#1a1a1a", height=200)
+        self._frame_video_container = ctk.CTkFrame(self, fg_color="#1a1a1a", height=200)
         self._frame_video_container.pack(fill=tk.X, padx=10, pady=(0, 5))
         self._frame_video_container.pack_propagate(False)
 
-        self._frame_video_panels = tk.Frame(self._frame_video_container, bg="#1a1a1a")
+        self._frame_video_panels = ctk.CTkFrame(self._frame_video_container, fg_color="transparent")
         self._frame_video_panels.pack(fill=tk.BOTH, expand=True)
 
         # Controles de cámara y micrófono
-        frame_controles = tk.Frame(self)
+        frame_controles = ctk.CTkFrame(self, fg_color="transparent")
         frame_controles.pack(fill=tk.X, padx=10, pady=(0, 5))
 
-        self._btn_camara = tk.Button(
+        self._btn_camara = ctk.CTkButton(
             frame_controles, text="📷 Iniciar Cámara",
-            command=self._toggle_camara, bg="#4CAF50", fg="white", width=16
+            command=self._toggle_camara, fg_color="#4CAF50", text_color="white", width=140, font=("Arial", 11, "bold")
         )
         self._btn_camara.pack(side=tk.LEFT, padx=5)
 
-        self._btn_mic = tk.Button(
+        self._btn_mic = ctk.CTkButton(
             frame_controles, text="🎤 Iniciar Micrófono",
-            command=self._toggle_mic, bg="#4CAF50", fg="white", width=18
+            command=self._toggle_mic, fg_color="#4CAF50", text_color="white", width=150, font=("Arial", 11, "bold")
         )
         self._btn_mic.pack(side=tk.LEFT, padx=5)
 
-        self._label_cam_status = tk.Label(
-            frame_controles, text="", fg="#888", font=("Arial", 8)
+        self._label_cam_status = ctk.CTkLabel(
+            frame_controles, text="", text_color="#888", font=("Arial", 9)
         )
         self._label_cam_status.pack(side=tk.LEFT, padx=(5, 0))
 
         # Layout principal: panel izquierdo + chat
-        frame_principal = tk.Frame(self)
+        frame_principal = ctk.CTkFrame(self, fg_color="transparent")
         frame_principal.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
 
         self._crear_panel_izquierdo(frame_principal)
         self._crear_panel_chat(frame_principal)
 
-        tk.Button(self, text="Salir de la Sala", command=self._salir,
-                  bg="#f44336", fg="white", font=("Arial", 10)).pack(pady=10)
+        ctk.CTkButton(self, text="Salir de la Sala", command=self._salir,
+                  fg_color="#f44336", text_color="white", font=("Arial", 11, "bold")).pack(pady=10)
 
     def _crear_panel_izquierdo(self, padre):
-        frame_izq = tk.Frame(padre, width=200)
+        frame_izq = ctk.CTkFrame(padre, width=200, fg_color="transparent")
         frame_izq.pack(side=tk.LEFT, fill=tk.BOTH, expand=False, padx=(0, 5))
         frame_izq.pack_propagate(False)
 
         if self._es_host:
-            tk.Label(frame_izq, text="Sala de Espera",
-                     font=("Arial", 10, "bold")).pack(pady=(0, 5))
-            self._lista_espera = tk.Listbox(frame_izq, height=8)
+            ctk.CTkLabel(frame_izq, text="Sala de Espera",
+                     font=("Arial", 11, "bold")).pack(pady=(0, 5))
+            self._lista_espera = tk.Listbox(
+                frame_izq, height=8, bg="#2b2b2b", fg="white",
+                selectbackground="#1f538d", borderwidth=0, highlightthickness=0
+            )
             self._lista_espera.pack(fill=tk.BOTH, expand=True)
 
-            frame_botones = tk.Frame(frame_izq)
+            frame_botones = ctk.CTkFrame(frame_izq, fg_color="transparent")
             frame_botones.pack(fill=tk.X, pady=(0, 10))
-            tk.Button(frame_botones, text="Admitir", command=self._admitir,
-                      bg="#4CAF50", fg="white", width=8).pack(side=tk.LEFT, padx=2)
-            tk.Button(frame_botones, text="Rechazar", command=self._rechazar,
-                      bg="#f44336", fg="white", width=8).pack(side=tk.LEFT, padx=2)
+            ctk.CTkButton(
+                frame_botones, text="Admitir", command=self._admitir,
+                fg_color="#4CAF50", text_color="white", width=80, font=("Arial", 11, "bold")
+            ).pack(side=tk.LEFT, padx=2)
+            ctk.CTkButton(
+                frame_botones, text="Rechazar", command=self._rechazar,
+                fg_color="#f44336", text_color="white", width=80, font=("Arial", 11, "bold")
+            ).pack(side=tk.LEFT, padx=2)
 
-        tk.Label(frame_izq, text="Conectados",
-                 font=("Arial", 10, "bold")).pack(pady=(0, 5))
-        self._lista_conectados = tk.Listbox(frame_izq, height=8)
+        ctk.CTkLabel(frame_izq, text="Conectados",
+                 font=("Arial", 11, "bold")).pack(pady=(0, 5))
+        self._lista_conectados = tk.Listbox(
+            frame_izq, height=8, bg="#2b2b2b", fg="white",
+            selectbackground="#1f538d", borderwidth=0, highlightthickness=0
+        )
         self._lista_conectados.pack(fill=tk.BOTH, expand=True)
 
         if self._es_host:
-            tk.Button(frame_izq, text="Expulsar", command=self._expulsar,
-                      bg="#f44336", fg="white").pack(fill=tk.X, pady=(5, 0))
-
+            ctk.CTkButton(
+                frame_izq, text="Expulsar", command=self._expulsar,
+                fg_color="#f44336", text_color="white", font=("Arial", 11, "bold")
+            ).pack(fill=tk.X, pady=(5, 0))
 
     def _crear_panel_chat(self, padre):
-        frame_chat = tk.Frame(padre)
+        frame_chat = ctk.CTkFrame(padre, fg_color="transparent")
         frame_chat.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-        tk.Label(frame_chat, text="Chat", font=("Arial", 10, "bold")).pack()
-        self._chat_text = scrolledtext.ScrolledText(frame_chat, height=15, state=tk.DISABLED)
+        ctk.CTkLabel(frame_chat, text="Chat", font=("Arial", 11, "bold")).pack()
+        self._chat_text = scrolledtext.ScrolledText(
+            frame_chat, height=15, state=tk.DISABLED, bg="#2b2b2b", fg="white",
+            insertbackground="white", borderwidth=0, highlightthickness=0
+        )
         self._chat_text.pack(fill=tk.BOTH, expand=True)
 
-        frame_input = tk.Frame(frame_chat)
+        frame_input = ctk.CTkFrame(frame_chat, fg_color="transparent")
         frame_input.pack(fill=tk.X, pady=5)
 
-        self._entrada_msg = tk.Entry(frame_input)
+        self._entrada_msg = ctk.CTkEntry(frame_input, font=("Arial", 11))
         self._entrada_msg.pack(side=tk.LEFT, fill=tk.X, expand=True)
         self._entrada_msg.bind("<Return>", lambda e: self._enviar_mensaje())
 
-        tk.Button(frame_input, text="Enviar", command=self._enviar_mensaje,
-                  bg="#2196F3", fg="white").pack(side=tk.RIGHT, padx=(2, 0))
-        tk.Button(frame_input, text="Archivo", command=self._enviar_archivo,
-                  bg="#9C27B0", fg="white").pack(side=tk.RIGHT, padx=(0, 2))
-        tk.Button(frame_input, text="Abrir descargas",
-                  command=self._abrir_carpeta_descargas,
-                  bg="#607D8B", fg="white").pack(side=tk.RIGHT, padx=(0, 2))
+        ctk.CTkButton(
+            frame_input, text="Enviar", command=self._enviar_mensaje,
+            fg_color="#2196F3", text_color="white", width=70, font=("Arial", 11, "bold")
+        ).pack(side=tk.RIGHT, padx=(2, 0))
+        ctk.CTkButton(
+            frame_input, text="Archivo", command=self._enviar_archivo,
+            fg_color="#9C27B0", text_color="white", width=70, font=("Arial", 11, "bold")
+        ).pack(side=tk.RIGHT, padx=(0, 2))
+        ctk.CTkButton(
+            frame_input, text="Abrir descargas",
+            command=self._abrir_carpeta_descargas,
+            fg_color="#607D8B", text_color="white", width=120, font=("Arial", 11, "bold")
+        ).pack(side=tk.RIGHT, padx=(0, 2))
 
     # ------------------------------------------------------------------
     # Inicialización de gestores

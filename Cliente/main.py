@@ -1,19 +1,26 @@
 import json
 import os
 import sys
+import customtkinter as ctk
 import tkinter as tk
+
+# Configuración de apariencia de CustomTkinter
+ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue")
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Cliente.pantallas.login import LoginFrame
 from Cliente.pantallas.pantalla_principal import PantallaPrincipal
 from Cliente.pantallas.pantalla_sala import PantallaSala
 
-class MainApp(tk.Tk):
+class MainApp(ctk.CTk):
     def __init__(self, host="127.0.0.1", puerto=5000):
         super().__init__()
         self._host = host
         self._puerto = puerto
         self.title("Prototipo Zoom - PC3 POO")
         self.geometry("400x350")
+
         self._cliente_socket = None
         self._usuario = None
         self._frame_actual = None
