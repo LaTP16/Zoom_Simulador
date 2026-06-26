@@ -49,4 +49,11 @@ class BaseDatos:
 
     @staticmethod
     def hash_clave(clave):
+        # ADVERTENCIA DE SEGURIDAD:
+        # Nunca se deben almacenar contraseñas en texto plano por el riesgo de
+        # filtración y robo masivo de credenciales.
+        # Además, para un entorno real de producción, el uso de SHA-256 sin sal (salt)
+        # es vulnerable a ataques de fuerza bruta y tablas de arcoiris. Se recomienda
+        # migrar a algoritmos más seguros y lentos como bcrypt o Argon2, aplicando salado.
         return hashlib.sha256(clave.encode()).hexdigest()
+

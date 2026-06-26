@@ -1,10 +1,11 @@
 import os
 import tkinter as tk
-from tkinter import scrolledtext
+from tkinter import scrolledtext, messagebox
 from Cliente.modelos.mensaje import Mensaje
 from Cliente.gestores.gestor_video import GestorVideo
 from Cliente.gestores.gestor_audio import GestorAudio
 from Cliente.gestores.gestor_archivos import GestorArchivos
+
 
 
 class PantallaSala(tk.Frame):
@@ -24,8 +25,10 @@ class PantallaSala(tk.Frame):
         self._on_salir = on_salir
         self._link_counter = 0
         self._solicitantes = {}  # { idUsuario: { nombre } }
+        self._participantes_actuales = []
         self._download_dir = os.path.join(os.path.dirname(__file__), "..", "descargas")
         os.makedirs(self._download_dir, exist_ok=True)
+
 
         self._crear_widgets()
         self._inicializar_gestores()
@@ -101,6 +104,11 @@ class PantallaSala(tk.Frame):
                  font=("Arial", 10, "bold")).pack(pady=(0, 5))
         self._lista_conectados = tk.Listbox(frame_izq, height=8)
         self._lista_conectados.pack(fill=tk.BOTH, expand=True)
+
+        if self._es_host:
+            tk.Button(frame_izq, text="Expulsar", command=self._expulsar,
+                      bg="#f44336", fg="white").pack(fill=tk.X, pady=(5, 0))
+
 
     def _crear_panel_chat(self, padre):
         frame_chat = tk.Frame(padre)
@@ -181,13 +189,14 @@ class PantallaSala(tk.Frame):
 
         if self._es_host:
             self._cliente_socket.registrar_callback("WAITING_ROOM_UPDATE", self._nuevo_solicitante)
+        self._cliente_socket.registrar_callback("KICKED", self._ser_expulsado)
 
     def _limpiar_callbacks(self):
         for tipo in ("CHAT_MESSAGE", "ROOM_PARTICIPANTS",
                      "VIDEO_START", "VIDEO_STOP", "CAMERA_FRAME",
                      "AUDIO_FRAME",
                      "FILE_START", "FILE_CHUNK", "FILE_END",
-                     "WAITING_ROOM_UPDATE"):
+                     "WAITING_ROOM_UPDATE", "KICKED"):
             self._cliente_socket.remover_callback(tipo)
 
     # ------------------------------------------------------------------
@@ -232,6 +241,7 @@ class PantallaSala(tk.Frame):
         self.after(0, self._refrescar_lista_conectados, participantes)
 
     def _refrescar_lista_conectados(self, participantes):
+        self._participantes_actuales = participantes
         self._lista_conectados.delete(0, tk.END)
         for p in participantes:
             texto = p.get("nombres", "Desconocido")
@@ -297,6 +307,32 @@ class PantallaSala(tk.Frame):
     def _abrir_carpeta_descargas(self):
         self._gestor_archivos.abrir_carpeta_descargas()
 
+    def _expulsar(self):
+        sel = self._lista_conectados.curselection()
+        if not sel:
+            return
+        idx = sel[0]
+        if idx >= len(self._participantes_actuales):
+            return
+        participante = self._participantes_actuales[idx]
+        if participante["idUsuario"] == self._usuario.id_usuario:
+            messagebox.showwarning("Advertencia", "No puedes expulsarte a ti mismo.")
+            return
+
+        self._cliente_socket.enviar({
+            "type": "KICK_USER",
+            "roomCode": self._codigo_sala,
+            "idSala": self._id_sala,
+            "targetId": participante["idUsuario"]
+        })
+
+    def _ser_expulsado(self, msg):
+        self.after(0, self._on_expulsado_ui)
+
+    def _on_expulsado_ui(self):
+        messagebox.showinfo("Información", "Has sido expulsado de la sala por el anfitrión.")
+        self._salir()
+
     # ------------------------------------------------------------------
     # Salir de la sala
     # ------------------------------------------------------------------
@@ -308,3 +344,4 @@ class PantallaSala(tk.Frame):
         self._cliente_socket.enviar({"type": "LEAVE_ROOM", "roomCode": self._codigo_sala})
         self._limpiar_callbacks()
         self._on_salir()
+

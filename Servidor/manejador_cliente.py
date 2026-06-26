@@ -71,6 +71,9 @@ class ManejadorCliente:
             self._sala_actual = None
             if codigo:
                 self._servidor.broadcast_participantes(codigo)
+        elif tipo == Protocolo.KICK_USER:
+            self._manejar_expulsar(mensaje)
+
 
     def _manejar_login(self, mensaje):
         respuesta = self._auth_service.validar_login(
@@ -206,6 +209,41 @@ class ManejadorCliente:
         print(f"[CHAT] {mensaje.get('userName')}: {mensaje.get('message')}")
         self._servidor.reenviar_a_sala(mensaje.get("roomCode"), mensaje, self)
 
+    def _manejar_expulsar(self, mensaje):
+        try:
+            bd = BaseDatos()
+            conexion = bd.conectar()
+            cursor = conexion.cursor()
+            # Validar que el emisor sea el anfitrión de la sala
+            cursor.execute(
+                "SELECT IdHost FROM Salas WHERE CodigoSala = ? AND Estado = 'Activa'",
+                (mensaje["roomCode"],)
+            )
+            sala = cursor.fetchone()
+            if not sala:
+                return
+            if sala["IdHost"] != self._usuario_actual["idUsuario"]:
+                print(f"[WARN] Intento no autorizado de expulsión por parte del usuario {self._usuario_actual['idUsuario']}")
+                return
+
+            target_id = mensaje["targetId"]
+            invitado = self._servidor.buscar_cliente_por_usuario(target_id)
+            if invitado:
+                invitado._sala_actual = None
+                invitado._enviar({
+                    "type": Protocolo.KICKED,
+                    "idSala": mensaje["idSala"]
+                })
+
+            cursor.execute(
+                "DELETE FROM ParticipantesSala WHERE IdSala = ? AND IdUsuario = ?",
+                (mensaje["idSala"], target_id)
+            )
+            conexion.commit()
+            self._servidor.broadcast_participantes(mensaje["roomCode"])
+        except Exception as e:
+            print(f"[ERROR] Al expulsar usuario: {e}")
+
     def _enviar(self, datos):
         try:
             if "__rid" in datos:
@@ -216,3 +254,4 @@ class ManejadorCliente:
         except Exception as e:
             print(f"[ERROR] No se pudo enviar mensaje: {e}")
             self._conectado = False
+

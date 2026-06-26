@@ -918,6 +918,25 @@ python -m Cliente.main
     \caption{Usuarios de prueba}
 \end{table}
 
+\section{Limitaciones del Prototipo y Seguridad}
+
+\subsection{Seguridad y Almacenamiento de Contrase\~nas}
+Actualmente, el prototipo no almacena contrase\~nas en texto plano, sino utilizando el algoritmo hash SHA-256. Sin embargo, esto presenta los siguientes riesgos de seguridad que deben ser advertidos:
+\begin{itemize}
+    \item \textbf{Riesgo de texto plano:} Si se almacenasen contrase\~nas en texto plano, cualquier persona con acceso a la base de datos o al disco podr\'{\i}a comprometer todas las cuentas del sistema. Aunque se usa hash SHA-256 para evitarlo, es fundamental advertir sobre el riesgo de seguridad que implicar\'{\i}a volver a texto plano.
+    \item \textbf{Falta de Sal (Salt):} Al no utilizar un valor de sal aleatorio para cada usuario antes de aplicar la funci\'on hash, el sistema es vulnerable a ataques de diccionario y tablas de arcoiris (rainbow tables) si la base de datos se ve comprometida.
+    \item \textbf{Canal no cifrado (Sin TLS/SSL):} Toda la comunicaci\'on (incluyendo credenciales de login, mensajes de chat y transmisi\'on de datos) viaja en texto plano a trav\'es de sockets TCP convencionales, lo que expone la informaci\'on a ataques de intermediario (Man-in-the-Middle).
+\end{itemize}
+
+\subsection{Limitaciones del Prototipo}
+Se documentan las siguientes limitaciones de la implementaci\'on actual del prototipo:
+\begin{itemize}
+    \item \textbf{Uso de TCP en lugar de UDP:} La transmisi\'on de audio y video utiliza sockets TCP. En sistemas de producci\'on realistas (como Zoom), se prefiere UDP (con WebRTC) ya que prioriza la baja latencia sobre la confiabilidad absoluta de entrega.
+    \item \textbf{Persistencia Incompleta:} Las tablas de \texttt{Mensajes} y \texttt{ArchivosCompartidos} existen en el esquema SQL, pero el servidor no realiza inserciones ni consultas persistentes de este historial, limit\'andose a la transmisi\'on en memoria.
+    \item \textbf{Concurrencia de Base de Datos:} Al usar SQLite, el sistema cuenta con bloqueos de escritura a nivel de base de datos, lo cual limita la escalabilidad en un entorno concurrente masivo.
+    \item \textbf{Rendimiento de Interfaz (Tkinter):} El motor de renderizado de la UI de Tkinter no est\'a dise\~nado para procesar y redibujar flujos de video de alta definici\'on o alto frame rate de manera eficiente en la CPU.
+\end{itemize}
+
 \section{Conclusiones}
 
 \begin{itemize}

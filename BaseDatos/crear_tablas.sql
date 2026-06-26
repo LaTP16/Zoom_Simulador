@@ -1,3 +1,14 @@
+-- ============================================================================
+-- ADVERTENCIA DE SEGURIDAD:
+-- 1. Nunca almacene contraseñas en texto plano. Hacerlo comprometería la totalidad
+--    de las cuentas en caso de que la base de datos sea robada o leída.
+-- 2. Este prototipo utiliza SHA-256 para el campo 'PasswordHash'. En un entorno
+--    de producción real, se debe utilizar un algoritmo de derivación de claves
+--    robusto (como bcrypt, Argon2 o PBKDF2) e incorporar un valor de sal (salt)
+--    único por usuario para mitigar ataques de diccionario y tablas de arcoiris.
+-- 3. La transmisión de credenciales debe protegerse mediante TLS/SSL (HTTPS).
+-- ============================================================================
+
 CREATE TABLE IF NOT EXISTS Usuarios (
     IdUsuario INTEGER PRIMARY KEY AUTOINCREMENT,
     Nombres TEXT NOT NULL,
