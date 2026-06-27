@@ -668,9 +668,6 @@ def _mostrar_sala(self, codigo_sala, es_host, id_sala):
     self._frame_actual.pack(fill=tk.BOTH, expand=True)
 \end{lstlisting}
 
-\subsubsection{Template Method (M\'etodo Plantilla)}
-En la transmisi\'on de video, la captura e inicializaci\'on siguen un esqueleto predefinido (establecer conexi\'on, inicializar buffer, iterar captura, codificar, enviar y liberar recursos). La l\'ogica del bucle de captura se define en la superclase del gestor, mientras que los pasos espec\'ificos para la lectura de la c\'amara cambian seg\'un la estrategia.
-
 \subsubsection{Resumen de Patrones}
 
 \begin{table}[H]
@@ -686,7 +683,6 @@ Strategy & \texttt{GestorVideo} & Selecciona din\'amicamente entre OpenCV y FFmp
 Facade & \texttt{ManejadorCliente} & Simplifica el acceso a \texttt{AuthService}, \texttt{BaseDatos} y el relay de mensajes. \\
 Command & Protocolo JSON & El campo \texttt{type} del mensaje act\'ua como comando para enrutar en el servidor. \\
 Factory Method & \texttt{MainApp} & M\'etodos \texttt{\_mostrar\_*()} crean las diferentes pantallas sin acoplar al flujo. \\
-Template Method & \texttt{GestorVideo} & Define el esqueleto de captura y env\'io; las subclases implementan la lectura. \\
 \bottomrule
 \end{tabular}
 \caption{Resumen de patrones de dise\~no implementados}
@@ -943,7 +939,7 @@ python -m Cliente.main
     \item Se implement\'o un prototipo funcional de videoconferencia con arquitectura cliente-servidor.
     \item Los sockets TCP con protocolo JSON proporcionan una base s\'olida para comunicaci\'on en tiempo real.
     \item Los cuatro pilares de la POO -- encapsulamiento, herencia, polimorfismo y abstracci\'on -- fueron aplicados consistentemente en todo el c\'odigo.
-    \item Se identificaron y aplicaron siete patrones de dise\~no: Singleton, Observer, Strategy, Facade, Command, Template Method y Factory Method.
+    \item Se identificaron y aplicaron seis patrones de dise\~no: Singleton, Observer, Strategy, Facade, Command y Factory Method.
     \item La POO permiti\'o organizar el c\'odigo en clases especializadas con responsabilidades claras.
     \item La concurrencia con hilos permite atender m\'ultiples clientes simult\'aneamente.
     \item La transmisi\'on de video se logr\'o mediante captura, compresi\'on JPEG y codificaci\'on base64.
