@@ -3,6 +3,7 @@ import threading
 from Servidor.protocolo import Protocolo
 from Servidor.auth_service import AuthService
 from Servidor.base_datos import BaseDatos
+from Servidor.fabrica_mensajes import FabricaMensajes
 
 class ManejadorCliente:
     def __init__(self, servidor, conexion, direccion):
@@ -45,31 +46,15 @@ class ManejadorCliente:
 
     def _procesar_mensaje(self, mensaje):
         tipo = mensaje.get("type")
-        if tipo == Protocolo.LOGIN_REQUEST:
-            self._manejar_login(mensaje)
-        elif tipo == Protocolo.CREATE_ROOM:
-            self._manejar_crear_sala(mensaje)
-        elif tipo == Protocolo.JOIN_ROOM_REQUEST:
-            self._manejar_unirse_sala(mensaje)
-        elif tipo == Protocolo.ADMIT_USER:
-            self._manejar_admitir(mensaje)
-        elif tipo == Protocolo.REJECT_USER:
-            self._manejar_rechazar(mensaje)
-        elif tipo == Protocolo.CHAT_MESSAGE:
-            self._manejar_chat(mensaje)
-        elif tipo in (Protocolo.FILE_START, Protocolo.FILE_CHUNK, Protocolo.FILE_END):
-            self._servidor.reenviar_a_sala(mensaje.get("roomCode"), mensaje, self)
-        elif tipo in (Protocolo.CAMERA_FRAME, Protocolo.VIDEO_START, Protocolo.VIDEO_STOP):
-            self._servidor.reenviar_a_sala(mensaje.get("roomCode"), mensaje, self)
-        elif tipo == Protocolo.AUDIO_FRAME:
-            self._servidor.reenviar_a_sala(mensaje.get("roomCode"), mensaje, self)
-        elif tipo == Protocolo.GET_ROOM_PARTICIPANTS:
-            self._servidor.broadcast_participantes(mensaje.get("roomCode"))
-        elif tipo == Protocolo.LEAVE_ROOM:
-            self._manejar_salir_sala()
+        handler = FabricaMensajes.obtener_handler(self, tipo)
+        if handler:
+            handler(mensaje)
 
-        elif tipo == Protocolo.KICK_USER:
-            self._manejar_expulsar(mensaje)
+    def _manejar_reenvio_sala(self, mensaje):
+        self._servidor.reenviar_a_sala(mensaje.get("roomCode"), mensaje, self)
+
+    def _manejar_participantes(self, mensaje):
+        self._servidor.broadcast_participantes(mensaje.get("roomCode"))
 
 
     def _manejar_login(self, mensaje):
